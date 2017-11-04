@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color id = "lll" name="colorPrimary">#EF6C00</color>
+    <color name="colorPrimaryDark">#FBAE17</color>
+    <color name="colorAccent">#FBAE17</color>
+    <color name="colorJudy">
+        #ec008c</color>
+
+    <!--Lawrencium-->
+    <color name = "colorLawrenciumDark">#0f0c29</color>
+    <color name = "colorLawrenciumAccent">#302b63</color>
+    <color name = "colorLawrencium">#24243e</color>
+
+<!--Quepal-->
+    <color name = "colorQuepalDark">#11998e</color>
+    <color name = "colorQuepalAccent">#38ef7d</color>
+    <color name = "colorQuepal">#11998e</color>
+
+</resources>
