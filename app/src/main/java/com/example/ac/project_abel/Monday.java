@@ -136,6 +136,7 @@ public class Monday extends Fragment {
                 template.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        ok
 
                         new Toggle(rootView,getContext(),displayheight,room,lecturer,course_text,code,type);
                     }
