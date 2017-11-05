@@ -90,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
         String name = sharedPref.getString("name", null);
         String classes = sharedPref.getString("classes", null);
         String f_classes = sharedPref.getString("free_classes", null);
+        String t_a = sharedPref.getString("tests_and_ass",null);
+        if (t_a==null){
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("tests_and_ass",new JSONArray().toString());
+            editor.commit();
+        }
         selection = sharedPref.getString("selection",null);
         int displaywidth = getWindowManager().getDefaultDisplay().getHeight();
 //        BroadcastReceiver alarmreceiver = new BroadcastReceiver() {
