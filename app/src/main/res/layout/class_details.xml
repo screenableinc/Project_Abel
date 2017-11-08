@@ -39,9 +39,11 @@
     <ScrollView
         android:id="@+id/scroll2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <LinearLayout
+            android:id="@+id/words"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -109,6 +111,7 @@
                     android:layout_weight="1"
                     android:text="Code: "
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/code"
                     android:layout_width="match_parent"
@@ -121,6 +124,7 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -135,6 +139,7 @@
                     android:layout_weight="1"
                     android:text="Type: "
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/type"
 
@@ -170,17 +175,33 @@
                     android:layout_weight="0.13"
                     android:background="?attr/colorAccent"
                     app:srcCompat="@android:drawable/ic_menu_add" />
+
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/tests"
+            <ScrollView
+                android:id="@+id/tests_scroll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:layout_height="wrap_content"
+                android:clipToPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/tests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+            </ScrollView>
+
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="2dp">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView6"
@@ -191,6 +212,8 @@
                     android:text="You have no upcoming test or assignment. \n Click add icon to add"
                     android:textAlignment="center"
                     android:textSize="24sp" />
+
+
             </FrameLayout>
         </LinearLayout>
     </ScrollView>
