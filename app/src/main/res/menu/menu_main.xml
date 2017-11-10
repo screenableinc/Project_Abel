@@ -15,6 +15,11 @@
     <item
         android:id="@+id/update"
         android:orderInCategory="100"
-        android:title="Update"
+        android:title="Update Time-Tables"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/update_version"
+        android:orderInCategory="100"
+        android:title="Update app version"
         app:showAsAction="never" />
 </menu>

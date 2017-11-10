@@ -13,6 +13,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
@@ -48,6 +50,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Target;
+import java.net.URI;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -79,11 +83,14 @@ public class MainActivity extends AppCompatActivity {
 //            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 //
 //        }
+        Log.w("CC", Calendar.getInstance()+"sssss");
         setTheme(new ThemeSettings().ThemeSettings(getApplicationContext()));
         super.onCreate(savedInstanceState);
         super.setTheme(new ThemeSettings().ThemeSettings(getApplicationContext()));
+        Intent intent = new Intent(this,AlarmReceiver.class);
+//        sendBroadcast(new Intent(Intent.ACTION_HEADSET_PLUG));
 //        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
-
+        startService(new Intent(this,Reminders.class));
 //        setTheme(R.style.AppThemeJudy);
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("abel_file_key", Context.MODE_PRIVATE);
 
@@ -257,8 +264,19 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, Settings.class));
             finish();
         }else if(id==R.id.update){
+
             new Update(MainActivity.this).execute(selection);
+//            new Notifications().Notifications(MainAerctivity.this,"start","");
+//            AudioManager mobilemode = (AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+//            int currentvol = mobilemode.getStreamVolume(AudioManager.STREAM_RING);
+//            mobilemode.setStreamVolume(AudioManager.STREAM_RING,currentvol,0);
+
+        }else if(id==R.id.update_version){
+            Intent openBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse("http://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/app-release.apk"));
+            startActivity(openBrowser);
+
         }
+
 
         return super.onOptionsItemSelected(item);
     }

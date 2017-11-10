@@ -351,6 +351,7 @@ public class Login extends AppCompatActivity{
         editor.putString("selection",selected_level.toLowerCase()+"---"+selected_mode.toLowerCase()+"---"+selected_program+selected_year+selected_semester);
         editor.putString("free_classes",free_classes);
         editor.commit();
+
     }
     public void set_edit_text_to_inactive(EditText v){
         v.setActivated(true);
