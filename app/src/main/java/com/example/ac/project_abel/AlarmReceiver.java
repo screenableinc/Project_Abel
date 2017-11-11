@@ -66,7 +66,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 //                        player.start();
 
                         new Notifications().Notifications(context,"Class in 15 minutes",program);
-                        setAlarm(context);
+//                        setAlarm(context);
 //                        show 15 min to class notification
 
 
@@ -74,10 +74,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                     }
                 }else if(curr_hr == start_hr){
                     new Notifications().Notifications(context,"Time for class",program);
-                    setAlarm(context);
+//                    setAlarm(context);
                 }
 //                Log.w("CC",start_hr+"ppppppppp"+Calendar);
-
+            setAlarm(context);
             }
         }catch (Exception e){
 //            Toast.makeText(context,"error"+e,Toast.LENGTH_LONG).show();

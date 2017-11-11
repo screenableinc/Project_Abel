@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
         }else if(id==R.id.update){
 
             new Update(MainActivity.this).execute(selection);
-//            new Notifications().Notifications(MainAerctivity.this,"start","");
+//            new Notifications().Notifications(MainActivity.this,"start","");
 //            AudioManager mobilemode = (AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 //            int currentvol = mobilemode.getStreamVolume(AudioManager.STREAM_RING);
 //            mobilemode.setStreamVolume(AudioManager.STREAM_RING,currentvol,0);
