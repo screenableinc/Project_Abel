@@ -59,6 +59,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 String program = _class.getString("program");
                 int start_hr = Integer.parseInt( time.split(":",-1)[0]);
                 int curr_hr = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                int curr_min=Calendar.getInstance().get(Calendar.MINUTE);
 //                Toast.makeText()
                 if (curr_hr+1==start_hr){
                     if (Calendar.getInstance().get(Calendar.MINUTE)>=45){
@@ -72,7 +73,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
                     }
-                }else if(curr_hr == start_hr){
+                }else if(curr_hr == start_hr && curr_min==0){
                     new Notifications().Notifications(context,"Time for class",program);
 //                    setAlarm(context);
                 }

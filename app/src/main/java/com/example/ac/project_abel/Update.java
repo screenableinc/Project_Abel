@@ -62,7 +62,7 @@ public class Update extends AsyncTask<String, Integer,String>{
             }
 
             JSONObject server_response = new JSONObject(result.toString());
-            Log.w("CC",server_response+"llllllll");
+
             free_classes = server_response.getString("free_classes");
             classes = server_response.getString("courses");
             SharedPreferences preferences = activity.getSharedPreferences("abel_file_key",Context.MODE_PRIVATE);
