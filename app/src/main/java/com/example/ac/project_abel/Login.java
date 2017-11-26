@@ -42,7 +42,7 @@ import static android.R.attr.keyEdgeFlags;
 public class Login extends AppCompatActivity{
 
     private static final String[] levels = {"Level","Undergraduate"};
-    private static final String[] modes ={"Mode of Study","Full-Time","Part-Time"};
+    private static final String[] modes ={"Mode of Study","Full-Time","Part-Time","distance"};
     private String[] years = {"Year","1","2","3","4"};
     private String[] semesters = {"Semester","1","2"};
 
@@ -50,6 +50,7 @@ public class Login extends AppCompatActivity{
     private JSONObject fulltime_programs;
     private JSONObject parttime_programs;
     private JSONObject postgrad_programs;
+    private JSONObject distance_programs;
     private JSONObject all_programs;
     private String selected_mode = "";
     private String selected_level = "";
@@ -117,10 +118,12 @@ public class Login extends AppCompatActivity{
             all_programs = new JSONObject(string_json);
             String[]keys = {"undergraduate","fulltime"};
             String[]ug_pt_keys = {"undergraduate","parttime"};
+            String[]distance_keys={"undergraduate","distance"};
             String[]pg_keys = {"postgraduate"};
             fulltime_programs = new JSONObject(new JSONParser().parse(all_programs,keys));
             parttime_programs = new JSONObject(new JSONParser().parse(all_programs,ug_pt_keys));
             postgrad_programs = new JSONObject(new JSONParser().parse(all_programs,pg_keys));
+            distance_programs = new JSONObject(new JSONParser().parse(all_programs,distance_keys));
 
             free_classes = string_json_f;
 
@@ -271,6 +274,30 @@ public class Login extends AppCompatActivity{
 //                         Log.w("CC",keys.next()+"kkkk");
                             }
 
+                    }else if(modes[position]=="distance"){
+
+                        Iterator keys = distance_programs.keys();
+                        selected_mode="distance";
+                        while (keys.hasNext()){
+                            String key = keys.next().toString();
+                            Log.w("CC",key);
+
+                            if(!key.contains("ACCA")) {
+                                key = new JSONParser().remove_last_chars(key, 2);
+
+                                if(!programs.contains(key)){
+                                    programs.add(key);
+                                }
+                            }else {
+                                if(!programs.contains(key)){
+                                    programs.add(key);}
+                            }
+
+//                            programs.notifyAll();
+                            program_adapter.notifyDataSetChanged();
+                         Log.w("CC",programs+"kkkk");
+                        }
+
                     }
                     program.setVisibility(View.VISIBLE);
 
@@ -291,8 +318,8 @@ public class Login extends AppCompatActivity{
 //                set year and semester to ""
 
                 selected_year="";selected_semester="";
-
-                if (!programs.get(position).contains("ACCA")){
+                Log.w("CC",programs.get(position));
+                if (!programs.get(position).contains("ACCA") && !programs.get(position).contains("Select")){
                     year_sem.setVisibility(View.VISIBLE);
                 }else {
                     year_sem.setVisibility(View.GONE);

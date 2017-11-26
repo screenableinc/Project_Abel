@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ac.project_abel">
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <!--<uses-permission android:name="android.permission."/>-->
+    package="com.example.ac.project_abel"
+    android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+
     <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
@@ -30,6 +30,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
 
         </receiver>
@@ -38,9 +39,13 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <service android:name=".Reminders"
-            android:enabled="true"/>
+            android:enabled="true">
+
+
+            </service>
         <activity android:name=".Settings"></activity>
 
     </application>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
 
 </manifest>
