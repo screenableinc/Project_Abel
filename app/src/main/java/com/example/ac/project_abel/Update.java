@@ -72,12 +72,12 @@ public class Update extends AsyncTask<String, Integer,String>{
             editor.commit();
 
 
-        }catch (Exception e){
+        }catch (final Exception e){
             Log.w("CC","faielddddddd"+e);
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(activity,"update_failed",Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,"update_failed"+e,Toast.LENGTH_LONG).show();
                 }
             });
             this.cancel(true);
