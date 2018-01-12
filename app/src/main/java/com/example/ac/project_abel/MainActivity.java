@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 //            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 //
 //        }
-        Log.w("CC", Calendar.getInstance()+"sssss");
+
         setTheme(new ThemeSettings().ThemeSettings(getApplicationContext()));
         super.onCreate(savedInstanceState);
         super.setTheme(new ThemeSettings().ThemeSettings(getApplicationContext()));
@@ -92,12 +92,17 @@ public class MainActivity extends AppCompatActivity {
 //        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         startService(new Intent(this,Reminders.class));
 //        setTheme(R.style.AppThemeJudy);
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("abel_file_key", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("details", Context.MODE_PRIVATE);
+        SharedPreferences credentials = getApplicationContext().getSharedPreferences("credentials", Context.MODE_PRIVATE);
 
-        String name = sharedPref.getString("name", null);
+        String name = credentials.getString("name", null);
+        if (name == null) {
+            name="";
+        }
         String classes = sharedPref.getString("classes", null);
         String f_classes = sharedPref.getString("free_classes", null);
         String t_a = sharedPref.getString("tests_and_ass",null);
+
         if (t_a==null){
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("tests_and_ass",new JSONArray().toString());

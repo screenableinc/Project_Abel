@@ -93,7 +93,7 @@ public class Toggle {
         });
     }
     public Toggle(View rootView, final Context context, int displayheight,
-                  String room, String lecturer, final String course_text, String code, String type){
+                  String room, String lecturer, final String course_text, final String code, String type){
 //        int displayheight =manager.getWindowManager().getDefaultDisplay().getHeight();
         this.context = context;
 
@@ -157,6 +157,12 @@ public class Toggle {
 //        this.year=calendar.get(Calendar.YEAR);
 //        this.month=calendar.get(Calendar.MONTH);
 //        this.day=calendar.get(Calendar.DAY_OF_MONTH);
+        course.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context,CourseInfo.class).putExtra("course",code));
+            }
+        });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,7 +241,6 @@ public class Toggle {
 //                                    SharedPreferences.Editor editor = sharedPreferences.edit();
 //                                    editor.putString("tests_and_ass",jsonArray.toString());
 //                                    editor.commit();
-//                                }catch (Exception e){
 //                                    Toast.makeText(context,"Error",Toast.LENGTH_SHORT);
 //                                }
 //

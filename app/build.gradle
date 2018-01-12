@@ -49,5 +49,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
     compile 'org.jsoup:jsoup:1.11.2'
+    compile 'com.felipecsl:gifimageview:2.1.0'
+    compile 'com.mikhaellopez:circularprogressbar:1.1.1'
     testCompile 'junit:junit:4.12'
 }

@@ -40,56 +40,23 @@
                 android:hint="What can i call you ?"
                 android:inputType="textPersonName" />
 
-            <Spinner
-                android:id="@+id/level"
-                android:layout_gravity="center"
+            <EditText
+                android:id="@+id/studentId"
                 android:layout_width="241dp"
-                android:layout_height="55dp" />
-
-            <Spinner
-                android:id="@+id/mode"
-                android:layout_width="241dp"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:visibility="gone" />
-
-            <Spinner
-                android:id="@+id/program"
-                android:layout_width="241dp"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:id="@+id/year_sem"
-                android:layout_width="241dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <Spinner
-                    android:id="@+id/year"
-                    android:layout_width="241dp"
-                    android:layout_height="55dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1" />
-
-                <Spinner
-                    android:id="@+id/semester"
-
-                    android:layout_width="241dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <Spinner
-                android:id="@+id/stage"
-                android:layout_width="241dp"
-
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:layout_gravity="center"
+                android:hint="Student Id"
+                android:inputType="text"
+                android:text="ECA1713710" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="241dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:text="w1se0977" />
 
         </LinearLayout>
     </ScrollView>
