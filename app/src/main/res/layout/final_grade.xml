@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/progress_mid"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+
+        app:cpb_background_progressbar_color="?attr/colorAccent"
+        app:cpb_background_progressbar_width="5dp"
+
+
+        app:cpb_progress="100"
+        app:cpb_progressbar_color="?attr/colorPrimary"
+        app:cpb_progressbar_width="10dp" />
+
+    <TextView
+        android:id="@+id/grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="---"
+        android:textColor="?attr/colorAccent"
+        android:textSize="100sp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="10dp"
+        android:text="Your final grade is:"
+        android:textColor="?attr/colorAccent"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/posted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+
+</FrameLayout>
