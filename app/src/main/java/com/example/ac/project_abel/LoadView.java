@@ -2,15 +2,19 @@ package com.example.ac.project_abel;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -36,16 +40,24 @@ public class LoadView {
     JSONObject free_classes;
     View rootView;
     LayoutInflater inflater;
-    Toolbar toolbar;
+
     FragmentActivity activity;
-    public LoadView(Context context,String day,Bundle bundle,LayoutInflater inflater,Toolbar toolbar,FragmentActivity activity){
+//    ViewPager pager;
+
+    public LoadView(Context context, String day, Bundle bundle, FragmentActivity activity){
 
         this.context = context;
         this.bundle = bundle;
         this.activity=activity;
-        this.toolbar = toolbar;
-        this.inflater = inflater;
-        this.rootView=inflater.inflate(R.layout.fragment_layout,null);
+
+        this.inflater = LayoutInflater.from(context);
+
+        this.rootView=LayoutInflater.from(context).inflate(R.layout.fragment_layout,null);
+//        this.barLayout=barLayout;
+
+
+
+
 
 
 
@@ -67,6 +79,7 @@ public class LoadView {
         if (hour.length()==1){
             hour = "0"+hour;
         }
+
         if (Integer.parseInt(hour)<8){
             hour = "08";
         }
@@ -132,35 +145,45 @@ public class LoadView {
                 }
             });
 
+            SharedPreferences preferences = context.getSharedPreferences("details",Context.MODE_PRIVATE);
+            String registered_programs = preferences.getString("programs",null);
+
+
 
 
             for (int i = 0;i<classes.length();i++){
-                LinearLayout l_layout = (LinearLayout) rootView.findViewById(R.id.l_layout);
-                LinearLayout hr=(LinearLayout) inflater.inflate(R.layout.hr,null);
-                LinearLayout template = (LinearLayout) inflater.inflate(R.layout.class_layout,null);
-
-                TextView time = (TextView) template.findViewById(R.id.time);
-                TextView course = (TextView) template.findViewById(R.id.course);
-                String text = classes.getJSONObject(i).get("time").toString();
                 final String course_text = classes.getJSONObject(i).get("program").toString();
-                final String lecturer = classes.getJSONObject(i).get("lecturer").toString();
-                final String room = classes.getJSONObject(i).get("room").toString();
-                time.setText(text);
-                course.setText(course_text);
-                l_layout.addView(template);
-                LayoutInflater layoutInflater = LayoutInflater.from(context);
-                final int displayheight =activity.getWindowManager().getDefaultDisplay().getHeight();
+                if (registered_programs.contains(course_text)) {
 
-                final String code = classes.getJSONObject(i).get("code").toString();
-                final String type = classes.getJSONObject(i).get("type").toString();
-                template.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                        new Toggle(rootView,context,displayheight,room,lecturer,course_text,code,type);
-                    }
-                });
+                    LinearLayout l_layout = (LinearLayout) rootView.findViewById(R.id.l_layout);
+                    LinearLayout hr = (LinearLayout) inflater.inflate(R.layout.hr, null);
+                    LinearLayout template = (LinearLayout) inflater.inflate(R.layout.class_layout, null);
 
+                    TextView time = (TextView) template.findViewById(R.id.time);
+                    TextView course = (TextView) template.findViewById(R.id.course);
+                    String text = classes.getJSONObject(i).get("time").toString();
+
+                    final String lecturer = classes.getJSONObject(i).get("lecturer").toString();
+                    final String room = classes.getJSONObject(i).get("room").toString();
+                    time.setText(text);
+                    course.setText(course_text);
+                    l_layout.addView(template);
+                    LayoutInflater layoutInflater = LayoutInflater.from(context);
+
+
+                    WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                    final int displayheight = manager.getDefaultDisplay().getHeight();
+                    final String code = classes.getJSONObject(i).get("code").toString();
+                    final String type = classes.getJSONObject(i).get("type").toString();
+                    template.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            new Toggle(rootView, context, displayheight, room, lecturer, course_text, code, type);
+                        }
+                    });
+                }
             }
         }catch (Exception e){
             Log.w("CC","failed on get"+e);
@@ -171,11 +194,11 @@ public class LoadView {
         final LinearLayout free_classes = (LinearLayout) rootView.findViewById(R.id.free_classes);
         final LinearLayout l_layout = (LinearLayout) rootView.findViewById(R.id.l_layout);
 
-        if (free_classes.getVisibility()==View.GONE){
-            toolbar.setTitle(bundle.get("name").toString());
-        }else {
-            toolbar.setTitle("Free Classes");
-        }
+//        if (free_classes.getVisibility()==View.GONE){
+//            toolbar.setTitle(bundle.get("name").toString());
+//        }else {
+//            toolbar.setTitle("Free Classes");
+//        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -198,6 +221,12 @@ public class LoadView {
                 }
             }
         });
+
+        LinearLayout holder = (LinearLayout) rootView.findViewById(R.id.holder);
+
+//        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//        Log.w("CC",manager.getDefaultDisplay().getHeight()+" "+ barLayout.getLayoutParams().height+""+pager.getLayoutParams().height+"sad");
+
         return rootView;
 
 

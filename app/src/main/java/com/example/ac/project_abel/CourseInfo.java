@@ -90,20 +90,27 @@ public class CourseInfo extends AppCompatActivity {
 
             int page =  params[0];
             Log.w("CC","caaled "+page);
-            switch (page){
-                case 0:
+            if(page==0)
+            {
                     String ca = new MiscEvents().GetCA(CourseInfo.this);
-                    Log.w("CC",ca);
-                case 2:
-                    String lect = new MiscEvents().GetLectContacts(CourseInfo.this);
-                    Log.w("CC",lect);
-                case 3:
-                    String _final = new MiscEvents().GetFinalResults(CourseInfo.this);
-                    Log.w("CC",_final);
-
-
-
+                    Log.w("CC",ca);}
+            if(page==1) {
+                String material = new MiscEvents().GetMaterial(CourseInfo.this, course_code);
+                Log.w("CC", material);
             }
+                if(page==2){
+                    String lect = new MiscEvents().GetLectContacts(CourseInfo.this);
+                    Log.w("CC",lect);}
+                if(page==4){
+                    String _final = new MiscEvents().GetFinalResults(CourseInfo.this);
+                    Log.w("CC",_final);}
+                if (page==3){
+                    String assignments = new MiscEvents().GetAssignments(CourseInfo.this,course_code);
+                    Log.w("CC",assignments);}
+
+
+
+
 
 
             return null;
@@ -161,6 +168,11 @@ public class CourseInfo extends AppCompatActivity {
                     in.setArguments(bundle);
                     return in;
                 case 3:
+                    Assignments assignments= new Assignments();
+                    bundle.putString("course_code",course_code);
+                    assignments.setArguments(bundle);
+                    return assignments;
+                case 4:
                     FinalGrade finalGrade= new FinalGrade();
                     bundle.putString("course_code",course_code);
                     finalGrade.setArguments(bundle);
@@ -174,7 +186,7 @@ public class CourseInfo extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 4;
+            return 5;
         }
 
         @Override
@@ -187,6 +199,8 @@ public class CourseInfo extends AppCompatActivity {
                 case 2:
                     return "Instructors";
                 case 3:
+                    return "Assignments";
+                case 4:
                     return "Final Grade";
             }
             return null;

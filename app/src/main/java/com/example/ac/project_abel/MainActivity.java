@@ -17,6 +17,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -40,6 +41,11 @@ import android.view.ViewGroup;
 
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -108,7 +114,10 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("tests_and_ass",new JSONArray().toString());
             editor.commit();
         }
-        selection = sharedPref.getString("selection",null);
+        String prefix = new MiscEvents().GetProgramPrefix(credentials.getString("studentId",null));
+        selection = "undergraduate---"+sharedPref.getString("mode",null)+"---"+prefix+sharedPref.getString("year",null)+sharedPref.getString("semester",null);
+        Log.w("CC",selection);
+
         int displaywidth = getWindowManager().getDefaultDisplay().getHeight();
 //        BroadcastReceiver alarmreceiver = new BroadcastReceiver() {
 //            @Override
@@ -183,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Hi "+name);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -193,13 +202,237 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.getLayoutParams().height = displaywidth;
+
+//        mViewPager.getLayoutParams().height = displaywidth;
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         int day = new Date().getDay();
         mViewPager.setCurrentItem(day);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.opts);
+
+        final LinearLayout group = (LinearLayout) findViewById(R.id.options);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (group.getVisibility()==View.GONE)
+                {toggle_menu("show");}
+            }
+        });
+
+        ViewGroup linearLayout  = (LinearLayout) findViewById(R.id.options);
+        for (int i = 0; i < linearLayout.getChildCount(); i++) {
+            FrameLayout option =(FrameLayout) linearLayout.getChildAt(i);
+            option.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int id = v.getId();
+                        if(id== R.id.update) {
+                            toggle_menu("hide");
+                            new Update(MainActivity.this).execute(selection);
+                        }if(
+                        id==R.id.update_a)
+                    {   toggle_menu("hide");
+                        Intent openBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse("http://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/app-release.apk"));
+                            startActivity(openBrowser);}
+                        if (id==R.id.settings) {
+                            startActivity(new Intent(MainActivity.this, Settings.class));
+                        }
+                    if(id==R.id.reset)
+                    {   toggle_menu("hide");
+                        AlertDialog.Builder builder;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                builder = new AlertDialog.Builder(MainActivity.this, new ThemeSettings().ThemeSettings(MainActivity.this));
+                            } else {
+                                builder = new AlertDialog.Builder(MainActivity.this);
+                            }
+
+                            builder.setTitle("Reset")
+                                    .setMessage("Are you sure you want to Reset?")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            new log_out().execute();
+
+
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // do nothing
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+
+
+                                    .show();
+
+
+
+
+                    }
+                }
+            });
+        }
+        LinearLayout button = (LinearLayout) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggle_menu("hide");
+            }
+        });
+
+//        toggle menu being a biatch
+//        FloatingActionButton toggle = (FloatingActionButton) findViewById(R.id.togg);
+//        FrameLayout view=(FrameLayout) new Wednesday().Return_view(MainActivity.this,mSectionsPagerAdapter.getItem(3).getArguments());
+//
+//
+//        final LinearLayout free_classes = (LinearLayout) view.getChildAt(1);
+//        final LinearLayout l_layout = (LinearLayout) view.findViewById(R.id.l_layout);
+//        toggle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//                if (free_classes.getVisibility()==View.GONE){
+//                    l_layout.animate().alpha(0);
+//                    l_layout.setVisibility(View.GONE);
+//                    free_classes.setVisibility(View.VISIBLE);
+//                    free_classes.animate().alpha(1);
+//                    toolbar.setTitle("Free Classes");
+//                    Toast.makeText(MainActivity.this,"Free Classes",Toast.LENGTH_SHORT).show();
+//                }else {
+//                    free_classes.animate().alpha(0);
+//                    free_classes.setVisibility(View.GONE);
+//                    l_layout.setVisibility(View.VISIBLE);
+//                    l_layout.animate().alpha(1);
+////                    toolbar.setTitle(bundle.get("name").toString());
+//
+//                }
+//
+//
+//            }
+//        });
 
 //        beginAction();
+
+    }
+    public void toggle_menu(final String setting){
+        int anim_file;
+
+        final LinearLayout group = (LinearLayout) findViewById(R.id.options);
+            LinearLayout button = (LinearLayout) findViewById(R.id.button);
+
+        if (setting.equals("show")){
+            anim_file=R.anim.fadein;
+            group.setVisibility(View.VISIBLE);
+            button.setVisibility(View.VISIBLE);
+        }else {
+            anim_file=R.anim.fadeout;
+            button.setVisibility(View.GONE);
+
+        }
+
+
+
+
+        final FrameLayout reset = (FrameLayout) findViewById(R.id.reset);
+        final Animation animation4 = AnimationUtils.loadAnimation(MainActivity.this,anim_file);
+        animation4.setFillAfter(true);
+        animation4.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if(setting.equals("hide")) {
+                    group.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+//        reset.startAnimation(animation4);
+
+        final FrameLayout settings = (FrameLayout) findViewById(R.id.settings);
+        final Animation animation3 = AnimationUtils.loadAnimation(MainActivity.this,anim_file);
+        animation3.setFillAfter(true);
+        animation3.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                reset.startAnimation(animation4);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+//        settings.startAnimation(animation3);
+
+        final FrameLayout update_app = (FrameLayout) findViewById(R.id.update_a);
+        final Animation animation2 = AnimationUtils.loadAnimation(MainActivity.this,anim_file);
+        animation2.setFillAfter(true);
+        animation2.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                settings.startAnimation(animation3);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+//        update_app.startAnimation(animation2);
+
+
+        FrameLayout update = (FrameLayout) findViewById(R.id.update);
+        Animation animation = AnimationUtils.loadAnimation(MainActivity.this,anim_file);
+        animation.setFillAfter(true);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation anim) {
+                update_app.startAnimation(animation2);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+        update.startAnimation(animation);
+
+
+
 
     }
     public void beginAction(){

@@ -1,8 +1,10 @@
 package com.example.ac.project_abel;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,11 +41,9 @@ public class Friday extends Fragment {
 
         final Bundle bundle = getArguments();
 
-        final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
 
-
-        return new LoadView(getActivity(),"fragment_layout",bundle,inflater,toolbar,getActivity()).ReturnRootView();
+        return new LoadView(getActivity(),"fragment_layout",bundle,getActivity()).ReturnRootView();
 
     }
 }

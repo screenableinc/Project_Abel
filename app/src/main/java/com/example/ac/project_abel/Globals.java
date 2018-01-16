@@ -11,6 +11,7 @@ public class Globals {
     protected static final String lectscon_url = "http://www.unilus.ac.zm/Students/LecturerContact.aspx";
     protected static final String viewca_url = "http://www.unilus.ac.zm/Students/ViewCA.aspx";
     protected static final String viewfinal_url = "http://www.unilus.ac.zm/Students/ViewResults.aspx";
+    protected static final String assignments_url = "http://www.unilus.ac.zm/Students/Assignments.aspx";
     protected static final String html = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"><head id=\"Head1\"><title>\n" +
             "\tUNIVERSITY OF LUSAKA\n" +
             "</title><link rel=\"icon\" type=\"image/ico\" href=\"../Images/favicon.ico\"><link href=\"../Styles/SiteV1.css\" rel=\"stylesheet\" type=\"text/css\"><link href=\"../Styles/Print.css\" rel=\"stylesheet\" type=\"text/css\" media=\"print\">\n" +

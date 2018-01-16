@@ -116,35 +116,7 @@ public class Toggle {
         this.layoutInflater = layoutInflater;
         final LinearLayout class_details=(LinearLayout) layoutInflater.inflate(R.layout.class_details,null);
         final LinearLayout tests = (LinearLayout) class_details.findViewById(R.id.tests);
-//        try{
-//            JSONArray jsonArray = new JSONArray(sharedPreferences.getString("tests_and_ass",null));
-//            if(jsonArray.length()>0){
-//                TextView empty = (TextView) class_details.findViewById(R.id.textView6);
-//                empty.setVisibility(View.GONE);
-//            }
-////            work
-//
-//        for (int i = 0;i<jsonArray.length();i++){
-//            if(jsonArray.getJSONObject(i).getString("course").equals(course_text)){
-//                FrameLayout frameLayout = (FrameLayout) layoutInflater.inflate(R.layout.asm8,null);
-//                TextView textView = (TextView) frameLayout.findViewById(R.id.textView7);
-//
-//                String which = jsonArray.getJSONObject(i).getString("type");
-////                textView.setLayoutParams(Gravity.apply(Gravity.CENTER););
-//                textView.setGravity(Gravity.CENTER);
-//                textView.setText(jsonArray.getJSONObject(i).getString("when")+" ("+which+")");
-//                textView.setTag(i);
-//                setListener(textView);
-////                textView.getLayoutParams().height=50;
-////                textView.setHeight(50);
-//                tests.addView(frameLayout);
-//            }
-//        }
-//        }
-//        catch (Exception e){
-//            Toast.makeText(context, "Loading error"+e, Toast.LENGTH_LONG).show();
-//        }
-//
+
         TextView roomnumb = (TextView) class_details.findViewById(R.id.roomnumb);
         TextView lect = (TextView) class_details.findViewById(R.id.lect);
         TextView course = (TextView) class_details.findViewById(R.id.classname);
@@ -166,94 +138,6 @@ public class Toggle {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.test_assignm8_dialog,null);
-//                final EditText details = (EditText) layout.findViewById(R.id.optional_details);
-//                final TextView date = (TextView) layout.findViewById(R.id.textView3);
-//                final Spinner spinner = (Spinner) layout.findViewById(R.id.type);
-//                final String[] types = {"Assignment","Test"};
-//                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,types);
-//                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-//                spinner.setAdapter(adapter);
-//                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                    @Override
-//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                        type_spinner_val=types[position];
-//                    }
-//
-//                    @Override
-//                    public void onNothingSelected(AdapterView<?> parent) {
-//
-//                    }
-//                });
-////                date.setActivated(false);
-//                date.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//
-//                        new DatePickerDialog(context, R.style.Theme_AppCompat_DayNight_Dialog, new DatePickerDialog.OnDateSetListener() {
-//
-//                            @Override
-//                            public void onDateSet(DatePicker view, int _year, int _month, int _day) {
-//                                view.getLayoutParams().height=200;
-//                                Calendar calendar = Calendar.getInstance();
-//                                year = _year;month=_month;day = _day;
-//                                calendar.set(Calendar.YEAR, year);
-//                                calendar.set(Calendar.MONTH, month);
-//                                calendar.set(Calendar.DAY_OF_MONTH, day);
-//
-//                                date.setText(day+"--"+(month+1)+"--"+year);
-//                                date.getLayoutParams().height=50;
-//
-//
-//
-//
-//                            }
-//
-//                        }, year, month, day).show();
-//                        return false;
-//                    }
-//
-//
-//                });
-//                builder.setTitle("Details")
-//
-//                        .setView(layout)
-//                        .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-////                                add to preference key
-//                                try{
-//                                    TextView add = new TextView(context);
-//                                    add.setText(day+"--"+(month+1)+"--"+year+"("+type_spinner_val+")");
-//                                    add.setGravity(Gravity.CENTER);add.setHeight(50);
-//                                    tests.addView(add);
-//                                    JSONArray jsonArray = new JSONArray(sharedPreferences.getString("tests_and_ass",null));
-//                                    JSONObject object = new JSONObject();
-//                                    object.put("when",day+"--"+(month+1)+"--"+year);
-//                                    object.put("type",type_spinner_val);
-//                                    object.put("course",course_text);
-//                                    object.put("details",details.getText().toString());
-//                                    jsonArray.put(object);
-////                                    set tag as index of item in json array
-//                                    add.setTag(jsonArray.length()-1);
-//                                    setListener(add);
-//                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-//                                    editor.putString("tests_and_ass",jsonArray.toString());
-//                                    editor.commit();
-//                                    Toast.makeText(context,"Error",Toast.LENGTH_SHORT);
-//                                }
-//
-//                            }
-//                        })
-//                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-//                            }
-//                        }).show();
-//
-//
                 Toast.makeText(context,"Feature not yet available",Toast.LENGTH_SHORT).show();
             }
         });

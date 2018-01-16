@@ -343,13 +343,14 @@ public class Setup extends AppCompatActivity {
                     String view_Ca =GetCA();
                     String viewFinal = GetFinalResults();
                     String contact = GetLectContacts();
-                    if(year_sem.equals("success")&&view_Ca.equals("success")&&viewFinal.equals("success")&&contact.equals("success")){
+                    if(view_Ca.equals("success")&&viewFinal.equals("success")&&contact.equals("success")){
                         startActivity(new Intent(Setup.this,MainActivity.class));
                         finish();
                     }else {
                         startActivity(new Intent(Setup.this,Login.class));
+                        finish();
                     }
-                    Log.w("CC",year_sem+" "+view_Ca+" "+viewFinal+" "+contact);
+//                    Log.w("CC",year_sem+" "+view_Ca+" "+viewFinal+" "+contact);
 
 
                 }else {
@@ -366,11 +367,14 @@ public class Setup extends AppCompatActivity {
                             String view_Ca =GetCA();
                             String viewFinal = GetFinalResults();
                             String contact = GetLectContacts();
-                            if(year_sem.equals("success")&&view_Ca.equals("success")&&viewFinal.equals("success")&&contact.equals("success")){
+                            Log.w("CC",year_sem+" "+view_Ca+ " "+viewFinal+" "+contact);
+                            if(view_Ca.equals("success")&&viewFinal.equals("success")&&contact.equals("success")){
                                 startActivity(new Intent(Setup.this,MainActivity.class));
                                 finish();
                             }else {
+
                                 startActivity(new Intent(Setup.this,Login.class));
+                                finish();
                             }
                             Log.w("CC",year_sem+" "+view_Ca+" "+viewFinal);
 

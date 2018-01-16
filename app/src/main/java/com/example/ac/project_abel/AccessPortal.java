@@ -256,6 +256,59 @@ public class AccessPortal {
         }
         in.close();
     }
+    public String postforMaterial(String url,String postParams,String cookie) throws Exception{
+        URL obj = new URL(url);
+        conn = (HttpURLConnection) obj.openConnection();
+
+
+        // Acts like a browser
+        conn.setUseCaches(false);
+//        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+        conn.setRequestProperty("Host", "unilus.ac.zm");
+        conn.setRequestProperty("User-Agent", USER_AGENT);
+        conn.setRequestProperty("Accept",
+                "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+        conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        conn.addRequestProperty("Cookie", cookie);
+
+        conn.setRequestProperty("Connection", "keep-alive");
+        conn.setRequestProperty("Referer", url);
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+
+        Log.w("CC","Post parameters : "+postParams);
+        Log.w("CC",Integer.toString(postParams.length()));
+
+        conn.setRequestProperty("Content-Length", Integer.toString(postParams.length()));
+
+
+
+        // Send post request
+        DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+        wr.writeBytes(postParams);
+        wr.flush();
+        wr.close();
+
+
+        int responseCode = conn.getResponseCode();
+        Log.w("CC","\nSending 'POST' request to URL : " + url);
+
+
+        BufferedReader in =
+                new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        return response.toString();
+    }
+
     public String getFormParams(String html, String username, String password)
             throws UnsupportedEncodingException {
 
@@ -287,6 +340,56 @@ public class AccessPortal {
                 paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
             }
 
+        }
+
+        // build parameters list
+        StringBuilder result = new StringBuilder();
+        for (String param : paramList) {
+            if (result.length() == 0) {
+                result.append(param);
+            } else {
+                result.append("&" + param);
+            }
+        }
+        return result.toString();
+    }
+
+    public String getFormParamsForMaterials(String html, String course)
+            throws UnsupportedEncodingException {
+
+        System.out.println("Extracting form's data...");
+
+        Document doc = Jsoup.parse(html);
+
+        // Google form id
+        Element loginform = doc.getElementById("Form1");
+        Elements inputElements = loginform.getElementsByTag("input");
+
+        List<String> paramList = new ArrayList<String>();
+        for (Element inputElement : inputElements) {
+            String key = inputElement.attr("name");
+            String value = inputElement.attr("value");
+
+            if (key.equals("__VIEWSTATE"))
+                paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
+            else if (key.equals("__VIEWSTATEGENERATOR"))
+                paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
+            else if(key.equals("__EVENTVALIDATION")){
+                paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
+            }else if (key.equals("ctl00$ctl00$MainContent$MainContent$Course")){
+                paramList.add(key + "=" + URLEncoder.encode(course, "UTF-8"));
+            }else if (key.equals("__EVENTTARGET")) {
+                paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
+            }
+            else if (key.equals("ctl00$ctl00$MainContent$MainContent$Button1")) {
+                paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
+            }
+            else if (key.equals("__EVENTARGUMENT")) {
+                paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
+            }
+            else if (key.equals("__LASTFOCUS")) {
+                paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
+            }
         }
 
         // build parameters list

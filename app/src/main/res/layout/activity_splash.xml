@@ -34,10 +34,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="..."
+                android:text="By Screenable inc"
                 android:textAlignment="center"
                 android:textColor="?attr/colorPrimary"
-                android:textSize="14sp"
+                android:textSize="24sp"
                 tools:layout_editor_absoluteX="163dp"
                 tools:layout_editor_absoluteY="371dp" />
         </FrameLayout>

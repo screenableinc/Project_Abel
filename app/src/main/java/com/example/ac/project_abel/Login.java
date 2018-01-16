@@ -88,9 +88,12 @@ public class Login extends AppCompatActivity{
 //        finish();
 
 
+
+
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("details",Context.MODE_PRIVATE);
         SharedPreferences flags = getApplicationContext().getSharedPreferences("flags",Context.MODE_PRIVATE);
-        Log.w("CC",flags.getBoolean("ca",false)+" "+flags.getBoolean("final",false)+" "+ flags.getBoolean("year_sem",false));
+        String progs = sharedPref.getString("programs",null);
+        Log.w("CC",flags.getBoolean("ca",false)+" "+flags.getBoolean("final",false)+" "+ flags.getBoolean("year_sem",false)+" "+progs);
         if(flags.getBoolean("ca",false)&&flags.getBoolean("final",false)&&flags.getBoolean("year_sem",false)&&flags.getBoolean("contacts",false))
         {
             startActivity(new Intent(Login.this,MainActivity.class));
