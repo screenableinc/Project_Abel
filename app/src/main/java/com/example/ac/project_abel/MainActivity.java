@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="4.4";
+    protected String APP_VERSION_NUMBER="4.6";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -594,7 +594,7 @@ public class MainActivity extends AppCompatActivity {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                             builder.setTitle("Update")
 
-                                    .setMessage("Version "+result.toString() +" available")
+                                    .setMessage("Version "+result.toString() +" available\n Current is "+APP_VERSION_NUMBER)
 
                                     .setPositiveButton("Download", new DialogInterface.OnClickListener() {
                                         @Override
