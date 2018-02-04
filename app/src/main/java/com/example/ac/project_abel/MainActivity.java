@@ -57,6 +57,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Target;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
+    protected String APP_VERSION_NUMBER="4.0";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -559,6 +562,27 @@ public class MainActivity extends AppCompatActivity {
                 case 6:
                     return "Saturday";
             }
+            return null;
+        }
+    }
+    public class check_for_app_version extends AsyncTask<String, Integer, String>{
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                URL url = new URL("http://wise18.pythonanywhere.com/classmate/update/"+selection);
+                URLConnection connection = url.openConnection();
+//            connection.setConnectTimeout(5000);
+
+                InputStream response = connection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(response);
+                BufferedReader reader1 = new BufferedReader(reader);
+                StringBuilder result = new StringBuilder();
+                String line;
+                while((line = reader1.readLine()) != null) {
+                    result.append(line);
+                }
+            }catch (Exception e){}
+
             return null;
         }
     }
