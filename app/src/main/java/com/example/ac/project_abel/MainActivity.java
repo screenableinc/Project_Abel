@@ -573,7 +573,8 @@ public class MainActivity extends AppCompatActivity {
                 URL url = new URL("https://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/src/main/version.cmv");
                 URLConnection connection = url.openConnection();
 //            connection.setConnectTimeout(5000);
-                connection.setUseCaches(false);
+                connection.setDefaultUseCaches(false);connection.setUseCaches(false);
+                Log.w("CC",connection.getUseCaches()+" cace sich");
 
                 InputStream response = connection.getInputStream();
                 InputStreamReader reader = new InputStreamReader(response);
