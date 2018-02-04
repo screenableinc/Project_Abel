@@ -41,7 +41,7 @@ public class Assignments extends Fragment {
     private void LoadView(){
         SharedPreferences preferences  = getContext().getSharedPreferences("details", Context.MODE_PRIVATE);
         String material = preferences.getString("assignments",null);
-        Log.w("CC",bundle.getString("course_code")+" "+material);
+        String code=bundle.getString("course_code");
         FloatingActionButton refresh = (FloatingActionButton) rootView.findViewById(R.id.refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,78 +58,87 @@ public class Assignments extends Fragment {
                 JSONArray array = new JSONArray(material);
                 LayoutInflater inflater = LayoutInflater.from(getActivity());
                 final LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                if (array.length()==0){
+                    TextView ass_av = (TextView) rootView.findViewById(R.id.ass_av);
+                    ass_av.setVisibility(View.VISIBLE);
+                }
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
+                    if (object.getString("course").equals(code)) {
 
-                    LinearLayout ass_lay = (LinearLayout) inflater.inflate(R.layout.material_ass, null);
+                        LinearLayout ass_lay = (LinearLayout) inflater.inflate(R.layout.material_ass, null);
 
-                    final String link = object.getString("link");
-                    String year = object.getString("year");
+                        final String link = object.getString("link");
+                        String year = object.getString("year");
 //                    String _number = object.getString("number");
-                    final String description = object.getString("description");
-                    final String submitted = object.getString("sub_date");
-                    final String due_date = object.getString("due_date");
-                    TextView number = (TextView) ass_lay.findViewById(R.id.number);
-                    TextView filename = (TextView) ass_lay.findViewById(R.id.file_name);
+                        final String description = object.getString("description");
+                        final String submitted = object.getString("sub_date");
+                        final String due_date = object.getString("due_date");
+                        TextView number = (TextView) ass_lay.findViewById(R.id.number);
+                        TextView filename = (TextView) ass_lay.findViewById(R.id.file_name);
 //                    Button button = (Button) ass_lay.findViewById(R.id.button2);
 
 //                    TextView h_number = (TextView) dialogue.findViewById(R.id.number);
-                    String file_name = link.split("/",-1)[link.split("/",-1).length-1];
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        String file_name = link.split("/", -1)[link.split("/", -1).length - 1];
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                    ass_lay.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                        ass_lay.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 //                            dialogue.removeView(sd);
-                            final LinearLayout dialogue = (LinearLayout) layoutInflater.inflate(R.layout.file_info,null);
-                            TextView descript = (TextView) dialogue.findViewById(R.id.description);
-                            TextView uploaded = (TextView) dialogue.findViewById(R.id.submitted);
-                            TextView due = (TextView) dialogue.findViewById(R.id.due);
-                            due.setVisibility(View.VISIBLE);
+                                final LinearLayout dialogue = (LinearLayout) layoutInflater.inflate(R.layout.file_info, null);
+                                TextView descript = (TextView) dialogue.findViewById(R.id.description);
+                                TextView uploaded = (TextView) dialogue.findViewById(R.id.submitted);
+                                TextView due = (TextView) dialogue.findViewById(R.id.due);
+                                due.setVisibility(View.VISIBLE);
 
 
-
-                            descript.setText(description);uploaded.setText(submitted);due.setText(due_date);
-                            try {
-
-
-                                builder.setTitle("Info")
-
-                                        .setView(dialogue)
-
-                                        .setPositiveButton("Download", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                Intent openBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(new Globals().host+link.replace("../","/")));
-                                                startActivity(openBrowser);
+                                descript.setText(description);
+                                uploaded.setText(submitted);
+                                due.setText(due_date);
+                                try {
 
 
-                                            }
-                                        })
+                                    builder.setTitle("Info")
 
-                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
+                                            .setView(dialogue)
+
+                                            .setPositiveButton("Download", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    Intent openBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(new Globals().host + link.replace("../", "/")));
+                                                    startActivity(openBrowser);
+
+
+                                                }
+                                            })
+
+                                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
 //                                            dialog.dismiss();
-                                            }
-                                        }).show();
-                            }catch (Exception e){
+                                                }
+                                            }).show();
+                                } catch (Exception e) {
 
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    number.setText((i + 1) + "");
-                    filename.setText(file_name);
-                    holder.addView(ass_lay);
+                        number.setText((i + 1) + "");
+                        filename.setText(file_name);
+                        holder.addView(ass_lay);
 
 
+                    }
                 }
+            }else {
+                TextView ass_av = (TextView) rootView.findViewById(R.id.ass_av);
+                ass_av.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             Toast.makeText(getActivity(),"Something went wrong",Toast.LENGTH_LONG).show();
-            Log.w("CC",e.toString());
         }
 
     }

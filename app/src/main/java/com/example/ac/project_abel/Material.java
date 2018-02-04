@@ -57,9 +57,14 @@ public class Material extends Fragment {
         LinearLayout holder = (LinearLayout) rootView.findViewById(R.id.holder);
         holder.removeAllViews();
         try {
+
             if(material!=null) {
                 JSONArray array = new JSONArray(material);
                 final LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                if(array.length()==0){
+                    TextView mat_av = (TextView) rootView.findViewById(R.id.mat_av);
+                    mat_av.setVisibility(View.VISIBLE);
+                }
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
                     LayoutInflater inflater=LayoutInflater.from(getActivity());
@@ -121,6 +126,11 @@ public class Material extends Fragment {
 
 
                 }
+            }else {
+
+                    TextView mat_av = (TextView) rootView.findViewById(R.id.mat_av);
+                    mat_av.setVisibility(View.VISIBLE);
+
             }
         } catch (Exception e) {
             Toast.makeText(getActivity(),"Something went wrong",Toast.LENGTH_LONG).show();

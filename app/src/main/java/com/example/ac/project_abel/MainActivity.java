@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="4.0";
+    protected String APP_VERSION_NUMBER="4.1";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -326,6 +326,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 //        beginAction();
+        new check_for_app_version().execute();
 
     }
     public void toggle_menu(final String setting){
@@ -569,19 +570,55 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                URL url = new URL("http://wise18.pythonanywhere.com/classmte/update/"+selection);
+                URL url = new URL("https://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/src/main/version.cmv");
                 URLConnection connection = url.openConnection();
 //            connection.setConnectTimeout(5000);
 
                 InputStream response = connection.getInputStream();
                 InputStreamReader reader = new InputStreamReader(response);
                 BufferedReader reader1 = new BufferedReader(reader);
-                StringBuilder result = new StringBuilder();
+                StringBuilder _result = new StringBuilder();
                 String line;
                 while((line = reader1.readLine()) != null) {
-                    result.append(line);
+                    _result.append(line);
                 }
-            }catch (Exception e){}
+                final String result=_result.toString();
+
+                if(!APP_VERSION_NUMBER.equals(result.toString())){
+//                    show dialogue
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("Update")
+
+                                    .setMessage("Version "+result.toString() +" available")
+
+                                    .setPositiveButton("Download", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            Intent openBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse("http://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/app-release.apk"));
+                                            startActivity(openBrowser);
+
+
+                                        }
+                                    })
+
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+//                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                        }
+                    });
+
+
+                }
+            }catch (Exception e){
+
+            }
 
             return null;
         }
@@ -601,20 +638,12 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
                 MiscEvents miscEvents = new MiscEvents();
-                Log.w("CC","calleddfffff");
+
                 if (miscEvents.Reset(getApplicationContext())){
                     startActivity(new Intent(MainActivity.this,Login.class));
                     finish();
                 }
-//            Context context = getApplicationContext();
-//
-//            SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("abel_file_key",Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPref.edit();
-//            editor.putString("name",null);
-//            editor.putString("classes",null);
-//            editor.commit();
-//            startActivity(new Intent(MainActivity.this,Login.class));
-//            finish();
+
             return null;
         }
     }

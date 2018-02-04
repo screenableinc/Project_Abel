@@ -35,4 +35,14 @@
 
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_popup_sync" />
+
+    <TextView
+        android:id="@+id/ass_av"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="No assignments to show"
+        android:textColor="?attr/colorPrimaryDark"
+        android:textSize="18sp"
+        android:visibility="gone" />
 </FrameLayout>
