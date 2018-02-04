@@ -569,7 +569,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                URL url = new URL("http://wise18.pythonanywhere.com/classmate/update/"+selection);
+                URL url = new URL("http://wise18.pythonanywhere.com/classmte/update/"+selection);
                 URLConnection connection = url.openConnection();
 //            connection.setConnectTimeout(5000);
 
