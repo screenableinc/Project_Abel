@@ -1,12 +1,21 @@
 package com.example.ac.project_abel;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,10 +37,20 @@ public class MiscEvents {
     Globals globals = new Globals();
     String studentId;
     String password;
+    String course_code;
+    protected String ERROR_MESSAGE="Something went wrong, check your internet connection";
+    View view;
+    Activity activity;
     boolean triggered = false;
 //    public MiscEvents(Context context){
 //
 //    }
+
+//    public String begin(Context context,String course){
+//        zz
+//
+//    }
+
     public String GetProgramPrefix(String id){
         String prefix;
         String returnVal=id;
@@ -56,7 +75,15 @@ public class MiscEvents {
             if(access.equals("success")){
                 switch (caller){
                     case "ca":
-                        GetCA(context);
+                        GetCA(context,view,course_code,activity);
+                    case "final":
+                        GetFinalResults(context,this.activity);
+                    case "contacts":
+                        GetLectContacts(context,activity);
+                    case "assignments":
+                        GetAssignments(context,course_code,activity);
+                    case "material":
+                        GetMaterial(context,course_code,activity);
 
                 }
             }
@@ -66,8 +93,13 @@ public class MiscEvents {
             return null;
     }
 
-    public String GetCA(Context context){
+    public String GetCA(Context context, View view,String course,Activity activity){
         try {
+            this.view=view;
+            this.activity=activity;
+            this.course_code=course;
+
+
 
             SharedPreferences preferences = context.getSharedPreferences("credentials", MODE_PRIVATE);
             studentId = preferences.getString("studentId",null);
@@ -77,7 +109,8 @@ public class MiscEvents {
             if (element!=null){
 //                if fail safe hasnt yet been triggered call it
                 if (triggered){
-                    return "failedee";
+                    ShowMessage("Error with credentials\n Please try again",context);
+                    return "failed";
                 }else {
 //                    check with fail safe
                     Fail_safe(context,"ca");
@@ -108,6 +141,7 @@ public class MiscEvents {
                         details.put(innerTds.get(0).text(),object);
 
                     }catch (Exception e){
+                        ShowMessage(ERROR_MESSAGE,context);
                         return "failed "+e;
                     }
 
@@ -119,11 +153,16 @@ public class MiscEvents {
                 SharedPreferences.Editor details_edit= details_prefs.edit();
                 details_edit.putString("ca",details.toString());
                 details_edit.apply();
+
+
+                ShowMessage("Success",context);
+
+                Log.w("CC","success ");
                 return "success";
             }
         } catch (Exception e) {
 //                e.printStackTrace();
-            Log.w("CC","faield ar material get kkkkkk");
+            ShowMessage(ERROR_MESSAGE,context);;
             return "failed "+e;
         }
 
@@ -131,20 +170,26 @@ public class MiscEvents {
 
 
     }
-    public String GetFinalResults(Context context){
+    public String GetFinalResults(final Context context,Activity activity){
         try {
             SharedPreferences preferences = context.getSharedPreferences("credentials", MODE_PRIVATE);
             studentId = preferences.getString("studentId",null);
             password = preferences.getString("password",null);
+            this.activity=activity;
+
+
+
+
 //            String access = new AccessPortal(studentId,password,globals.viewca_url,context).GetPageContent(globals.viewca_url);
             String access = new AccessPortal(studentId,password,globals.viewfinal_url,context).GetPageContent(globals.viewfinal_url);
             Element element = Jsoup.parse(access).getElementById("MainContent_Button1");
             if (element!=null){
                 if (triggered){
-                    return "failedee";
+                    ShowMessage("Error with credentials\n please try again",context);
+                    return "failed";
                 }else {
 //                    check with fail safe
-                    Fail_safe(context,"ca");
+                    Fail_safe(context,"final");
                     return "";
 
                 }
@@ -182,18 +227,31 @@ public class MiscEvents {
                 SharedPreferences.Editor details_edit= details_prefs.edit();
                 details_edit.putString("final",details.toString());
                 details_edit.apply();
+                ShowMessage("Success",context);
+//                new Performance().LoadView(view,course_code);
                 return "success";
             }
         } catch (Exception e) {
 //                e.printStackTrace();
+            ShowMessage(ERROR_MESSAGE,context);
             Log.w("CC","faield ar material get fin "+e);
         }
 
         return "";
     }
+    public void ShowMessage(final String message,final Context context){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context,message, Toast.LENGTH_LONG).show();
 
-    public String GetLectContacts(Context context){
-            try{
+            }
+        });
+    }
+
+    public String GetLectContacts(Context context,Activity activity){
+        this.activity = activity;
+        try{
                 SharedPreferences preferences = context.getSharedPreferences("credentials", MODE_PRIVATE);
                 studentId = preferences.getString("studentId",null);
                 password = preferences.getString("password",null);
@@ -203,10 +261,11 @@ public class MiscEvents {
             Element element = Jsoup.parse(access).getElementById("MainContent_Button1");
             if (element!=null){
                 if (triggered){
+                    ShowMessage("Error with credentials\n please try again",context);
                     return "failedee";
                 }else {
 //                    check with fail safe
-                    Fail_safe(context,"ca");
+                    Fail_safe(context,"contacts");
                     return "";
 
                 }
@@ -227,24 +286,28 @@ public class MiscEvents {
                     }
                     details.put(object);
                 }
-                Log.w("CC", details.toString());
+
 
 
                 SharedPreferences details_prefs = context.getSharedPreferences("details", MODE_PRIVATE);
                 SharedPreferences.Editor details_edit = details_prefs.edit();
                 details_edit.putString("contact", details.toString());
                 details_edit.apply();
+                ShowMessage("Success",context);
                 return "success";
             }
         }catch (Exception e){
-            Log.w("CC","epic"+ e);
+//                Toast.makeText(context,, Toast.LENGTH_LONG).show();
+            ShowMessage(ERROR_MESSAGE,context);
             return "failed";
         }
 
     }
-    public String GetMaterial(Context context,String course){
+    public String GetMaterial(Context context,String course,Activity  activity){
+        this.activity=activity;
         try{
             SharedPreferences preferences = context.getSharedPreferences("credentials", MODE_PRIVATE);
+            course_code = course;
             studentId = preferences.getString("studentId",null);
             password = preferences.getString("password",null);
             SharedPreferences request_params = context.getSharedPreferences("request_params",MODE_PRIVATE);
@@ -255,10 +318,11 @@ public class MiscEvents {
             Element element = Jsoup.parse(access).getElementById("MainContent_Button1");
             if (element!=null){
                 if (triggered){
+                    ShowMessage("Error with credentials \n Please try again",context);
                     return "failedee";
                 }else {
 //                    check with fail safe
-                    Fail_safe(context,"ca");
+                    Fail_safe(context,"material");
                     return "";
 
                 }
@@ -295,21 +359,23 @@ public class MiscEvents {
                 SharedPreferences.Editor details_edit= details_prefs.edit();
                 details_edit.putString(course+"_material",arr.toString());
                 details_edit.apply();
-                Log.w("CC",arr.toString());
+                ShowMessage("Success",context);
 
 
                 return "success";
             }
         }catch (Exception e){
-            Log.w("CC","epic"+ e);
+            ShowMessage(ERROR_MESSAGE,context);
             return "failed";
         }
 //    return null;
     }
 
-    public String GetAssignments(Context context,String course){
+    public String GetAssignments(Context context,String course, Activity activity){
+        this.activity = activity;
         try{
             SharedPreferences preferences = context.getSharedPreferences("credentials", MODE_PRIVATE);
+            course_code = course;
             studentId = preferences.getString("studentId",null);
             password = preferences.getString("password",null);
 //                String access = new AccessPortal(studentId,password,globals.viewca_url,context).GetPageContent(globals.viewca_url);
@@ -318,10 +384,11 @@ public class MiscEvents {
             Element element = Jsoup.parse(access).getElementById("MainContent_Button1");
             if (element!=null){
                 if (triggered){
+                    ShowMessage("Error with credentials", context);
                     return "failedee";
                 }else {
 //                    check with fail safe
-                    Fail_safe(context,"ca");
+                    Fail_safe(context,"assignments");
                     return "";
 
                 }
@@ -342,6 +409,7 @@ public class MiscEvents {
                     object.put(keys[2],innerTds.get(3).text());
                     object.put(keys[3],innerTds.get(4).text());
                     object.put(keys[4],innerTds.get(5).text());
+                    object.put("course",innerTds.get(2).getElementsByAttribute("href").text());
                     details.put(object);
                 }
                 Log.w("CC", details.toString());
@@ -349,12 +417,14 @@ public class MiscEvents {
 
                 SharedPreferences details_prefs = context.getSharedPreferences("details", MODE_PRIVATE);
                 SharedPreferences.Editor details_edit = details_prefs.edit();
-                details_edit.putString(course+"_assignments", details.toString());
+                details_edit.putString("assignments", details.toString());
                 details_edit.apply();
+                ShowMessage("Success",context);
+
                 return "success";
             }
         }catch (Exception e){
-            Log.w("CC","epic"+ e);
+            ShowMessage(ERROR_MESSAGE,context);
             return "failed";
         }
 
@@ -368,11 +438,10 @@ public class MiscEvents {
             editor.putBoolean("final",false);
             editor.putBoolean("year_sem",false);
             editor.putBoolean("contacts",false);
-            SharedPreferences.Editor editor1 =   context.getSharedPreferences("details",MODE_PRIVATE).edit();
-            editor1.putString("classes",null);
-            editor1.commit();
-            editor.putString("theme","");
-            editor.commit();
+            editor.apply();
+            context.getSharedPreferences("credentials",MODE_PRIVATE).edit().clear().apply();
+            context.getSharedPreferences("details",MODE_PRIVATE).edit().clear().apply();
+
 
         }catch (Exception e){
             Log.w("CC","faileddddd"+e);
@@ -385,6 +454,9 @@ public class MiscEvents {
     }
 
 //            return null;
+    public void Update_view(Context context){
+
+    }
 
         }
 

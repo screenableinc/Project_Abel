@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CourseInfo extends AppCompatActivity {
 
@@ -58,18 +59,19 @@ public class CourseInfo extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        FloatingActionButton fab  = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int page = mViewPager.getCurrentItem();
-                new Refresh().execute(page);
-
-
-            }
-        });
+//        FloatingActionButton fab  = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                int page = mViewPager.getCurrentItem();
+////                new Refresh().execute(page);
+//
+//
+//            }
+//        });
 
 
 
@@ -90,24 +92,7 @@ public class CourseInfo extends AppCompatActivity {
 
             int page =  params[0];
             Log.w("CC","caaled "+page);
-            if(page==0)
-            {
-                    String ca = new MiscEvents().GetCA(CourseInfo.this);
-                    Log.w("CC",ca);}
-            if(page==1) {
-                String material = new MiscEvents().GetMaterial(CourseInfo.this, course_code);
-                Log.w("CC", material);
-            }
-                if(page==2){
-                    String lect = new MiscEvents().GetLectContacts(CourseInfo.this);
-                    Log.w("CC",lect);}
-                if(page==4){
-                    String _final = new MiscEvents().GetFinalResults(CourseInfo.this);
-                    Log.w("CC",_final);}
-                if (page==3){
-                    String assignments = new MiscEvents().GetAssignments(CourseInfo.this,course_code);
-                    Log.w("CC",assignments);}
-
+//
 
 
 
@@ -148,6 +133,7 @@ public class CourseInfo extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             Bundle bundle = new Bundle();
+
             switch (position){
 
                 case 0:

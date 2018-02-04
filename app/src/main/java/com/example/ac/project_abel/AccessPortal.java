@@ -122,10 +122,13 @@ public class AccessPortal {
 
         int responseCode = conn.getResponseCode();
         Log.w("CC","\nSending 'GET' request to URL : " + url+" "+stored_cookie);
-        Log.w("CC","Response Code : " + responseCode);
+        Log.w("CC","Bytes sent : " + conn.getHeaderFields().get("content-Length"));
+
 
         BufferedReader in =
                 new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+
         String inputLine;
         StringBuffer response = new StringBuffer();
 
@@ -133,6 +136,7 @@ public class AccessPortal {
             response.append(inputLine);
         }
         in.close();
+
 
         // Get the response cookies
 //        try {
@@ -243,7 +247,7 @@ public class AccessPortal {
 
 
         int responseCode = conn.getResponseCode();
-        Log.w("CC","\nSending 'POST' request to URL : " + url);
+        Log.w("CC","\nSending 'POST' request size to URL : " + postParams.length());
 
 
         BufferedReader in =
@@ -305,6 +309,7 @@ public class AccessPortal {
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
+
         in.close();
         return response.toString();
     }
@@ -366,6 +371,7 @@ public class AccessPortal {
         Elements inputElements = loginform.getElementsByTag("input");
 
         List<String> paramList = new ArrayList<String>();
+        paramList.add("ctl00$ctl00$MainContent$MainContent$Course" + "=" + URLEncoder.encode(course, "UTF-8"));
         for (Element inputElement : inputElements) {
             String key = inputElement.attr("name");
             String value = inputElement.attr("value");

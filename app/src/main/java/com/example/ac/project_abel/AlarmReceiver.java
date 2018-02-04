@@ -47,38 +47,45 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         String[] days = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
         int day = new Date().getDay();
-        SharedPreferences preferences = context.getSharedPreferences("abel_file_key",Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences("details",Context.MODE_PRIVATE);
+        String registered_programs=preferences.getString("programs",null);
+        Log.w("CC",preferences.getString("programs",null));
         String jstring_classes = preferences.getString("classes",null);
         try{
             JSONObject classes_of_day = new JSONObject(jstring_classes);
             JSONArray classes = new JSONArray(classes_of_day.getString(days[day]));
 
-            for (int i = 0; i < classes.length(); i++) {
-                JSONObject _class = classes.getJSONObject(i);
-                String time = _class.getString("time");
-                String program = _class.getString("program");
-                int start_hr = Integer.parseInt( time.split(":",-1)[0]);
-                int curr_hr = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-                int curr_min=Calendar.getInstance().get(Calendar.MINUTE);
+            if(registered_programs!=null) {
+                for (int i = 0; i < classes.length(); i++) {
+                    final String course_text = classes.getJSONObject(i).get("program").toString();
+                    if (registered_programs.contains(course_text)) {
+                        JSONObject _class = classes.getJSONObject(i);
+                        String time = _class.getString("time");
+                        String program = _class.getString("program");
+                        int start_hr = Integer.parseInt(time.split(":", -1)[0]);
+                        int curr_hr = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                        int curr_min = Calendar.getInstance().get(Calendar.MINUTE);
 //                Toast.makeText()
-                if (curr_hr+1==start_hr){
-                    if (Calendar.getInstance().get(Calendar.MINUTE)>=45){
+                        if (curr_hr + 1 == start_hr) {
+                            if (Calendar.getInstance().get(Calendar.MINUTE) >= 45) {
 //                        MediaPlayer player = MediaPlayer.create(context, Settings.System.DEFAULT_NOTIFICATION_URI);
 //                        player.start();
 
-                        new Notifications().Notifications(context,"Class in 15 minutes",program);
+                                new Notifications().Notifications(context, "Class in 15 minutes", program);
 //                        setAlarm(context);
 //                        show 15 min to class notification
 
 
-
-                    }
-                }else if(curr_hr == start_hr && curr_min==0){
-                    new Notifications().Notifications(context,"Time for class",program);
+                            }
+                        } else if (curr_hr == start_hr && curr_min == 0) {
+                            new Notifications().Notifications(context, "Time for class", program);
 //                    setAlarm(context);
-                }
+                        }
+
 //                Log.w("CC",start_hr+"ppppppppp"+Calendar);
-            setAlarm(context);
+                        setAlarm(context);
+                    }
+                }
             }
         }catch (Exception e){
 //            Toast.makeText(context,"error"+e,Toast.LENGTH_LONG).show();

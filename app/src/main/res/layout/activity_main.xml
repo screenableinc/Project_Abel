@@ -53,6 +53,16 @@
         android:layout_gravity="bottom"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/registration_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Please register to view classes"
+            android:textColor="?attr/colorAccent"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/options"
             android:layout_width="match_parent"

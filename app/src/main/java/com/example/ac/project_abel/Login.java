@@ -1,6 +1,7 @@
 package com.example.ac.project_abel;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -94,7 +95,7 @@ public class Login extends AppCompatActivity{
         SharedPreferences flags = getApplicationContext().getSharedPreferences("flags",Context.MODE_PRIVATE);
         String progs = sharedPref.getString("programs",null);
         Log.w("CC",flags.getBoolean("ca",false)+" "+flags.getBoolean("final",false)+" "+ flags.getBoolean("year_sem",false)+" "+progs);
-        if(flags.getBoolean("ca",false)&&flags.getBoolean("final",false)&&flags.getBoolean("year_sem",false)&&flags.getBoolean("contacts",false))
+        if(flags.getBoolean("ca",false)&&flags.getBoolean("final",false)&&flags.getBoolean("contacts",false))
         {
             startActivity(new Intent(Login.this,MainActivity.class));
             finish();
@@ -188,11 +189,12 @@ public class Login extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
     public class AttemptLogin extends AsyncTask<String, Integer, String>{
+        ProgressDialog dialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            ProgressDialog dialog = new ProgressDialog(Login.this);
+            dialog = new ProgressDialog(Login.this);
             dialog.setTitle("Logging In");
             dialog.setMessage("Please Wait");
             dialog.show();
@@ -218,7 +220,7 @@ public class Login extends AppCompatActivity{
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.w("CC","ooooooooo");
+
                             Toast.makeText(getApplicationContext(),"Error with credentials",Toast.LENGTH_LONG).show();
                         }
                     });
@@ -226,9 +228,21 @@ public class Login extends AppCompatActivity{
 
                 }
             }catch (Exception e){
-                Log.w("CC","failed to launch caught exception " +e);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),"Check internet connection",Toast.LENGTH_LONG).show();
+                    }
+                });
+
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            dialog.dismiss();
         }
     }
 }

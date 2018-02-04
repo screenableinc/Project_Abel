@@ -109,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
         String f_classes = sharedPref.getString("free_classes", null);
         String t_a = sharedPref.getString("tests_and_ass",null);
 
+//        display reg error
+
+
         if (t_a==null){
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("tests_and_ass",new JSONArray().toString());
@@ -125,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(),"sdsdsd",Toast.LENGTH_LONG);
 //            }
 //        };
+
 
 
         if (f_classes==null){
@@ -164,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 //        startService(class_reminder_service);
 
 //        in 2.0 move this to an async task
-        if (name==null || classes==null){
+        if (name==null){
             startActivity(new Intent(MainActivity.this,Login.class));
             finish();
 
@@ -183,12 +187,17 @@ public class MainActivity extends AppCompatActivity {
                 saturday =(JSONArray) json_of_classes.get("Saturday");
                 greeting = "Hi "+name;
             }catch (Exception e){
-                startActivity(new Intent(MainActivity.this,Login.class));
-                finish();
+
+//                startActivity(new Intent(MainActivity.this,Login.class));
+//                finish();
             }
         }
 
         setContentView(R.layout.activity_main);
+        if(classes==null){
+            TextView reg_error = (TextView) findViewById(R.id.registration_error);
+            reg_error.setVisibility(View.VISIBLE);
+        }
 
 
 
@@ -455,69 +464,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.reset) {
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(MainActivity.this, new ThemeSettings().ThemeSettings(MainActivity.this));
-            } else {
-                builder = new AlertDialog.Builder(MainActivity.this);
-            }
-
-            builder.setTitle("Reset")
-                    .setMessage("Are you sure you want to Reset?")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            new log_out().execute();
-
-
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-
-
-                    .show();
-
-
-
-        }else if(id ==R.id.action_settings) {
-
-            startActivity(new Intent(MainActivity.this, Settings.class));
-            finish();
-        }else if(id==R.id.update){
-
-            new Update(MainActivity.this).execute(selection);
-//            new Notifications().Notifications(MainActivity.this,"start","");
-//            AudioManager mobilemode = (AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-//            int currentvol = mobilemode.getStreamVolume(AudioManager.STREAM_RING);
-//            mobilemode.setStreamVolume(AudioManager.STREAM_RING,currentvol,0);
-
-        }else if(id==R.id.update_version){
-            Intent openBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse("http://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/app-release.apk"));
-            startActivity(openBrowser);
-
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
 
 
 

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,22 +26,40 @@ import org.json.JSONObject;
  */
 
 public class Instructors extends Fragment{
+    protected View rootView;
+    protected String course;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle bundle = getArguments();
-        String course = bundle.getString("course_code");
+        course = bundle.getString("course_code");
 
 
-        View rootView = inflater.inflate(R.layout.instructors, container, false);
+        rootView = inflater.inflate(R.layout.instructors, container, false);
+        LoadView();
 
+
+        return rootView;
+    }
+    private void LoadView(){
         SharedPreferences preferences = getContext().getSharedPreferences("details", Context.MODE_PRIVATE);
         String details = preferences.getString("contact",null);
+        FloatingActionButton refresh = (FloatingActionButton) rootView.findViewById(R.id.refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Refreshing",Toast.LENGTH_SHORT).show();
+                new Refresh().execute();
+
+            }
+        });
         try {
             JSONArray jsonObject = new JSONArray(details);
 //            LinearLayout linearLayout =(LinearLayout) inflater.inflate(R.layout.lect_contact,null);
             LinearLayout contactarea = (LinearLayout) rootView.findViewById(R.id.contact_area);
 //            loop through this array
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            contactarea.removeAllViews();
             for (int i = 0; i < jsonObject.length(); i++) {
                 if(jsonObject.getJSONObject(i).getString("course").equals(course)){
                     final String phone_number = jsonObject.getJSONObject(i).getString("cell");
@@ -79,6 +99,23 @@ public class Instructors extends Fragment{
         } catch (JSONException e) {
             Toast.makeText(getContext(),"Something went wrong",Toast.LENGTH_LONG).show();
         }
-        return rootView;
+    }
+    public class Refresh extends AsyncTask<Object,Integer,String> {
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+//            rootView.animate().alpha(0);
+
+
+            LoadView();
+
+        }
+
+        @Override
+        protected String doInBackground(Object... params) {
+
+            new MiscEvents().GetLectContacts(getActivity(),getActivity());
+            return null;
+        }
     }
 }

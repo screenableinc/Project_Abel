@@ -46,8 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="Student Id"
-                android:inputType="text"
-                android:text="ECA1713710" />
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/password"
@@ -55,8 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="Password"
-                android:inputType="textPassword"
-                android:text="w1se0977" />
+                android:inputType="textPassword" />
 
         </LinearLayout>
     </ScrollView>

@@ -3,8 +3,12 @@ package com.example.ac.project_abel;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,62 +23,95 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.zip.Inflater;
+
 /**
  * Created by Wise on 1/10/2018.
  */
 
 public class Material extends Fragment {
+//    protected Inflater inflater;
+    protected View rootView;
+    protected Bundle bundle;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.material, container, false);
-        Bundle bundle = getArguments();
+        rootView = inflater.inflate(R.layout.material, container, false);
+        bundle = getArguments();
+        LoadView();
+
+        return rootView;
+    }
+    private void LoadView(){
         SharedPreferences preferences  = getContext().getSharedPreferences("details", Context.MODE_PRIVATE);
         String material = preferences.getString(bundle.getString("course_code")+"_material",null);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        FloatingActionButton refresh = (FloatingActionButton) rootView.findViewById(R.id.refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Refreshing",Toast.LENGTH_SHORT).show();
+                new Refresh().execute();
+            }
+        });
 
         LinearLayout holder = (LinearLayout) rootView.findViewById(R.id.holder);
+        holder.removeAllViews();
         try {
             if(material!=null) {
                 JSONArray array = new JSONArray(material);
-
+                final LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
+                    LayoutInflater inflater=LayoutInflater.from(getActivity());
                     LinearLayout ass_lay = (LinearLayout) inflater.inflate(R.layout.material_ass, null);
-                    final LinearLayout dialogue = (LinearLayout) inflater.inflate(R.layout.file_info,null);
-                    String link = object.getString("link");
+
+                    final String link = object.getString("link");
                     String year = object.getString("year");
 //                    String _number = object.getString("number");
-                    String description = object.getString("description");
-                    String submitted = object.getString("submitted");
+                    final String description = object.getString("description");
+                    final String submitted = object.getString("submitted");
                     TextView number = (TextView) ass_lay.findViewById(R.id.number);
                     TextView filename = (TextView) ass_lay.findViewById(R.id.file_name);
 //                    Button button = (Button) ass_lay.findViewById(R.id.button2);
-                    TextView descript = (TextView) dialogue.findViewById(R.id.description);
-                    TextView uploaded = (TextView) dialogue.findViewById(R.id.submitted);
+
 //                    TextView h_number = (TextView) dialogue.findViewById(R.id.number);
-                    descript.setText(description);uploaded.setText(submitted);
                     String file_name = link.split("/",-1)[link.split("/",-1).length-1];
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
                     ass_lay.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            builder.setTitle("Info")
+//                            dialogue.removeView(sd);
+                            final LinearLayout dialogue = (LinearLayout) layoutInflater.inflate(R.layout.file_info,null);
+                            TextView descript = (TextView) dialogue.findViewById(R.id.description);
+                            TextView uploaded = (TextView) dialogue.findViewById(R.id.submitted);
 
-                            .setView(dialogue)
-                                    .setPositiveButton("Download", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
+                            descript.setText(description);uploaded.setText(submitted);
+                            try {
 
 
-                                        }
-                                    })
+                                builder.setTitle("Info")
 
-                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
+                                        .setView(dialogue)
 
-                                        }
-                                    }).show();
+                                        .setPositiveButton("Download", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent openBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(new Globals().host+link.replace("../","/")));
+                                                startActivity(openBrowser);
+
+                                            }
+                                        })
+
+                                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+//                                            dialog.dismiss();
+                                            }
+                                        }).show();
+                            }catch (Exception e){
+
+                            }
                         }
                     });
 
@@ -89,6 +126,19 @@ public class Material extends Fragment {
             Toast.makeText(getActivity(),"Something went wrong",Toast.LENGTH_LONG).show();
             Log.w("CC",e.toString());
         }
-        return rootView;
+    }
+    public class Refresh extends AsyncTask<String,Integer,String>{
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            LoadView();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            new MiscEvents().GetMaterial(getActivity(),bundle.getString("course_code"),getActivity());
+            return null;
+        }
     }
 }

@@ -70,6 +70,7 @@ public class Update extends AsyncTask<String, Integer,String>{
             editor.putString("free_classes",free_classes);
             editor.putString("classes",classes);
             editor.commit();
+            Log.w("CC",classes);
 
 
         }catch (final Exception e){
@@ -77,7 +78,7 @@ public class Update extends AsyncTask<String, Integer,String>{
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(activity,"update_failed"+e,Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,"Update_failed, Check your network connection",Toast.LENGTH_LONG).show();
                 }
             });
             this.cancel(true);
