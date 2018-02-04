@@ -145,7 +145,7 @@ public class Login extends AppCompatActivity{
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AttemptLogin().execute(studentid.getText().toString(),password.getText().toString(),name.getText().toString());
+                new AttemptLogin().execute(studentid.getText().toString().toUpperCase(),password.getText().toString(),name.getText().toString());
             }
         });
 
