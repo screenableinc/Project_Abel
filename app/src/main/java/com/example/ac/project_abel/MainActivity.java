@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="4.2";
+    protected String APP_VERSION_NUMBER="4.4";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -573,6 +573,7 @@ public class MainActivity extends AppCompatActivity {
                 URL url = new URL("https://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/src/main/version.cmv");
                 URLConnection connection = url.openConnection();
 //            connection.setConnectTimeout(5000);
+                connection.setUseCaches(false);
 
                 InputStream response = connection.getInputStream();
                 InputStreamReader reader = new InputStreamReader(response);
