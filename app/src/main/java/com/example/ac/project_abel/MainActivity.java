@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="4.1";
+    protected String APP_VERSION_NUMBER="4.2";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -597,6 +597,7 @@ public class MainActivity extends AppCompatActivity {
                                     .setPositiveButton("Download", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
 
                                             Intent openBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse("http://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/app-release.apk"));
                                             startActivity(openBrowser);
