@@ -49,7 +49,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         int day = new Date().getDay();
         SharedPreferences preferences = context.getSharedPreferences("details",Context.MODE_PRIVATE);
         String registered_programs=preferences.getString("programs",null);
-        Log.w("CC",preferences.getString("programs",null));
+//        Log.w("CC",preferences.getString("programs",null));
         String jstring_classes = preferences.getString("classes",null);
         try{
             JSONObject classes_of_day = new JSONObject(jstring_classes);
