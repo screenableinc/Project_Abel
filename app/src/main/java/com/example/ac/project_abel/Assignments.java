@@ -59,9 +59,9 @@ public class Assignments extends Fragment {
                 LayoutInflater inflater = LayoutInflater.from(getActivity());
                 final LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
                 if (array.length()==0){
-                    TextView ass_av = (TextView) rootView.findViewById(R.id.ass_av);
-                    ass_av.setVisibility(View.VISIBLE);
-                }
+
+                }else {TextView ass_av = (TextView) rootView.findViewById(R.id.ass_av);
+                    ass_av.setVisibility(View.GONE);}
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
                     if (object.getString("course").equals(code)) {

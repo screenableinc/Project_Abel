@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -24,9 +25,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.security.spec.ECField;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.google.android.gms.internal.zzahn.runOnUiThread;
 
 /**
  * Created by Wise on 30/10/2017.
@@ -84,6 +88,8 @@ public class MiscEvents {
                         GetAssignments(context,course_code,activity);
                     case "material":
                         GetMaterial(context,course_code,activity);
+                    case "registration":
+                        GetYearSem(course_code,context,activity);
 
                 }
             }
@@ -385,7 +391,7 @@ public class MiscEvents {
             if (element!=null){
                 if (triggered){
                     ShowMessage("Error with credentials", context);
-                    return "failedee";
+                    return "failed";
                 }else {
 //                    check with fail safe
                     Fail_safe(context,"assignments");
@@ -428,6 +434,119 @@ public class MiscEvents {
             return "failed";
         }
 
+    }
+    public String GetYearSem(String course, Context context, Activity activity){
+        this.activity=activity;
+
+        SharedPreferences preferences = context.getSharedPreferences("credentials", MODE_PRIVATE);
+        course_code = course;
+        studentId = preferences.getString("studentId",null);
+        password = preferences.getString("password",null);
+//                String access = new AccessPortal(studentId,password,globals.viewca_url,context).GetPageContent(globals.viewca_url);
+        try{
+
+        String access = new AccessPortal(studentId,password,globals.registration_url,context).GetPageContent(globals.registration_url);
+        Element _element = Jsoup.parse(access).getElementById("MainContent_Button1");
+        if (_element!=null){
+            if (triggered){
+                ShowMessage("Error with credentials", context);
+                return "failed";
+            }else {
+//                    check with fail safe
+                Fail_safe(context,"registration");
+                return "";
+
+            }}else{
+
+
+                Document doc = Jsoup.parse(access);
+                Element print = doc.getElementById("divPrint");
+                Elements tds = print.getElementsByTag("td");
+                JSONObject details = new JSONObject();
+
+                Elements grds = print.getElementsByAttributeValueStarting("class", "grd");
+                JSONArray programs = new JSONArray();
+                for (Element grd : grds) {
+                    Elements innerGrds = grd.getElementsByTag("td");
+                    try {
+                        programs.put(innerGrds.get(2).text());
+//                    put this stuff in a
+
+                    } catch (Exception e) {
+                        Log.w("CC", "error wisea " + e);
+                        return "failed";
+                    }
+                }
+                String year = "";
+                String semester = "";
+                String mode = "";
+                for (Element element : tds) {
+
+                    if (element.text().contains("YEAR OF STUDY")) {
+                        String string = element.text().replace("YEAR OF STUDY:", "").replace("SEMESTER:", "").replaceAll(" ", "");
+                        year = string.charAt(0) + "";
+                        semester = string.charAt(1) + "";
+                        Log.w("CC", year + " " + semester + " " + element.text());
+                        try {
+                            details.put("year", year);
+                            details.put("semester", semester);
+
+                        } catch (Exception e) {
+                            Log.w("CC", "error wise " + e);
+                            return "failed";
+                        }
+
+
+                    } else if (element.text().contains("MODE OF STUDY")) {
+                        try {
+                            mode = element.text().replace("MODE OF STUDY: ", "").replace(" ", "").toLowerCase();
+                            details.put("year", mode);
+
+                        } catch (Exception e) {
+                            Log.w("CC", "error wiseac " + e);
+                            return "failed";
+                        }
+                    }
+                }
+                String _classes = "";
+                try {
+                    Resources resources = context.getResources();
+                    InputStreamReader read = new InputStreamReader(resources.openRawResource(R.raw.programs_scheds));
+                    BufferedReader reader = new BufferedReader(read);
+                    String string_json = reader.readLine();
+                    JSONObject classes = new JSONObject(string_json);
+//                app currently for undergrad students
+                    _classes = classes.getJSONObject("undergraduate").getJSONObject(mode).getJSONObject(GetProgramPrefix(studentId) + year + semester).toString();
+
+                } catch (Exception e) {
+                    Log.w("CC", "error wiseas " + e);
+                    return "failed";
+                }
+                SharedPreferences details_prefs = context.getSharedPreferences("details", MODE_PRIVATE);
+                SharedPreferences.Editor details_edit = details_prefs.edit();
+                details_edit.putString("programs", programs.toString());
+                details_edit.putString("year", year);
+                details_edit.putString("semester", semester);
+                details_edit.putString("mode", mode);
+                details_edit.putString("classes", _classes);
+                details_edit.apply();
+                SharedPreferences prefs = context.getSharedPreferences("flags", MODE_PRIVATE);
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.putBoolean("year_sem", true);
+                edit.apply();
+
+//            GetPrograms();
+
+                return "success";
+            }
+    }catch (Exception e){
+            ShowMessage("Something went wrong",context);
+        }
+
+
+
+
+    return "failed";
     }
 
     public boolean Reset(Context context) {

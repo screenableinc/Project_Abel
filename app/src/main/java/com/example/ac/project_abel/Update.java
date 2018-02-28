@@ -65,7 +65,7 @@ public class Update extends AsyncTask<String, Integer,String>{
 
             free_classes = server_response.getString("free_classes");
             classes = server_response.getString("courses");
-            SharedPreferences preferences = activity.getSharedPreferences("abel_file_key",Context.MODE_PRIVATE);
+            SharedPreferences preferences = activity.getSharedPreferences("details",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor= preferences.edit();
             editor.putString("free_classes",free_classes);
             editor.putString("classes",classes);

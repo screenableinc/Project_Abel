@@ -153,7 +153,7 @@ public class Login extends AppCompatActivity{
     public void create_pref(String name, String json, String free_classes){
         Context context = getApplicationContext();
 
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("abel_file_key",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("details",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("name",name);
         editor.putString("classes",json);

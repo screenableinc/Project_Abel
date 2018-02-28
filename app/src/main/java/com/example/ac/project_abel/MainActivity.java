@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="4.7";
+    protected String APP_VERSION_NUMBER="4.8";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -574,7 +574,8 @@ public class MainActivity extends AppCompatActivity {
                 URLConnection connection = url.openConnection();
 //            connection.setConnectTimeout(5000);
                 connection.setDefaultUseCaches(false);connection.setUseCaches(false);
-                Log.w("CC",connection.getUseCaches()+" cace sich");
+
+
 
                 InputStream response = connection.getInputStream();
                 InputStreamReader reader = new InputStreamReader(response);
@@ -623,6 +624,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+            return null;
+        }
+    }
+    public class check_reg_status extends AsyncTask<String, Integer, String>{
+        @Override
+        protected String doInBackground(String... params) {
+//            new E
             return null;
         }
     }
