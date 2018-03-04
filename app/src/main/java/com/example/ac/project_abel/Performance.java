@@ -65,9 +65,9 @@ public class Performance extends Fragment {
 //wise remember to opttimize this code its horrible and amatuerish
         final CircularProgressBar circularProgressBar = (CircularProgressBar)rootView.findViewById(R.id.progress_ca);
         final CircularProgressBar circularProgressBarass1 = (CircularProgressBar)rootView.findViewById(R.id.progress_ass1);
-        final CircularProgressBar circularProgressBarass2 = (CircularProgressBar)rootView.findViewById(R.id.progress_ass2);
+//        final CircularProgressBar circularProgressBarass2 = (CircularProgressBar)rootView.findViewById(R.id.progress_ass2);
         final CircularProgressBar circularProgressBarprac = (CircularProgressBar)rootView.findViewById(R.id.progress_practical);
-        final CircularProgressBar circularProgressBartest = (CircularProgressBar)rootView.findViewById(R.id.progress_test);
+//        final CircularProgressBar circularProgressBartest = (CircularProgressBar)rootView.findViewById(R.id.progress_test);
         final CircularProgressBar circularProgressBarmid = (CircularProgressBar)rootView.findViewById(R.id.progress_mid);
         String grade="0.0";String test="0.0";
         String gradepct="0.0";
@@ -79,11 +79,12 @@ public class Performance extends Fragment {
             results = new JSONObject(ca).getJSONObject(course);
             grade = results.getString("ca");gradepct=((Float.parseFloat(grade)/40)*100)+"";
              ass1= results.getString("ass1"); ass1pct= ((Float.parseFloat(ass1)/10)*100)+"";
-            ass2= results.getString("ass2"); ass2pct= ((Float.parseFloat(ass2)/10)*100)+"";
+//            ass2= results.getString("ass2"); ass2pct= ((Float.parseFloat(ass2)/10)*100)+"";
              practical= results.getString("practical");practicalpct = ((Float.parseFloat(practical)/10)*100)+"";
-            test = results.getString("test"); testpct= ((Float.parseFloat(test)/10)*100)+"";
+//            test = results.getString("test"); testpct= ((Float.parseFloat(test)/10)*100)+"";
            mid  = results.getString("mid");midpct = ((Float.parseFloat(mid)/20)*100)+"";
         } catch (Exception e) {
+            Log.w("CC",e+" lllll "+course+" "+results);
             Toast.makeText(getActivity(),"Check registration",Toast.LENGTH_LONG).show();
         }
 //
@@ -107,13 +108,6 @@ public class Performance extends Fragment {
 
             animationass1.start();textViewass1.setText(ass1);textViewass1.animate().alpha(1).setDuration(6000).setInterpolator(new DecelerateInterpolator());
 
-            final ObjectAnimator animationass2 = ObjectAnimator.ofFloat (circularProgressBarass2, "progress", 0, Float.parseFloat(ass2pct)); // see this max value coming back here, we animale towards that value
-            animationass2.setDuration (5000); //in milliseconds
-            animationass2.setInterpolator (new DecelerateInterpolator());
-            final TextView textViewass2 = (TextView) rootView.findViewById(R.id.ass2text);
-
-
-            animationass2.start();textViewass2.setText(ass2);textViewass2.animate().alpha(1).setDuration(6000).setInterpolator(new DecelerateInterpolator());
 
             final ObjectAnimator animationprac = ObjectAnimator.ofFloat (circularProgressBarprac, "progress", 0, Float.parseFloat(practicalpct)); // see this max value coming back here, we animale towards that value
             animationprac.setDuration (5000); //in milliseconds
@@ -123,13 +117,6 @@ public class Performance extends Fragment {
 
             animationprac.start();textViewprac.setText(practical);textViewprac.animate().alpha(1).setDuration(6000).setInterpolator(new DecelerateInterpolator());
 
-            final ObjectAnimator animationtest = ObjectAnimator.ofFloat (circularProgressBartest, "progress", 0, Float.parseFloat(testpct)); // see this max value coming back here, we animale towards that value
-            animationtest.setDuration (5000); //in milliseconds
-            animationtest.setInterpolator (new DecelerateInterpolator());
-            final TextView textViewtest = (TextView) rootView.findViewById(R.id.grdtest);
-
-
-            animationtest.start();textViewtest.setText(test);textViewtest.animate().alpha(1).setDuration(6000).setInterpolator(new DecelerateInterpolator());
 
             final ObjectAnimator animationmids = ObjectAnimator.ofFloat (circularProgressBarmid, "progress", 0, Float.parseFloat(midpct)); // see this max value coming back here, we animale towards that value
             animationmids.setDuration (5000); //in milliseconds

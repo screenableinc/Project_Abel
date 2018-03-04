@@ -80,7 +80,7 @@ public class Setup extends AppCompatActivity {
 //                    success continue
                     Elements tds = Jsoup.parse(access).getElementsByAttributeValueStarting("class","grd");
                     JSONObject details = new JSONObject();
-                    String [] keys = {"code","ass1","ass2","practical","test","mid","ca"};
+                    String [] keys = {"code","ass1","practical","mid","ca"};
 
                     for(Element _element: tds ){
                         Elements innerTds = _element.getElementsByTag("td");
@@ -268,6 +268,7 @@ public class Setup extends AppCompatActivity {
             String year = "";
             String semester="";
             String mode = "";
+            String program="";
             for(Element element: tds ){
 
                 if (element.text().contains("YEAR OF STUDY")){
@@ -287,7 +288,16 @@ public class Setup extends AppCompatActivity {
                 }else if(element.text().contains("MODE OF STUDY")){
                     try {
                         mode= element.text().replace("MODE OF STUDY: ","").replace(" ","").toLowerCase();
-                        details.put("year",mode);
+                        details.put("mode",mode);
+
+                    }catch (Exception e){
+                        Log.w("CC","error wiseac "+e);
+                        return "failed";
+                    }
+                }else if (element.text().contains("PROGRAM OF STUDY")){
+                    try {
+                        program= element.text().replace("PROGRAM OF STUDY: ","");
+                        details.put("program",program);
 
                     }catch (Exception e){
                         Log.w("CC","error wiseac "+e);
@@ -302,8 +312,9 @@ public class Setup extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(read);
                 String string_json = reader.readLine();
                 JSONObject classes = new JSONObject(string_json);
+                Log.w("CC",program);
 //                app currently for undergrad students
-                _classes = classes.getJSONObject("undergraduate").getJSONObject(mode).getJSONObject(new MiscEvents().GetProgramPrefix(studentId)+year+semester).toString();
+                _classes = classes.getJSONObject("undergraduate").getJSONObject(mode).getJSONObject(new MiscEvents().GetProgramPrefix(program,getApplicationContext())+year+semester).toString();
 
             }catch (Exception e){
                 Log.w("CC","error wiseas "+e);
@@ -315,6 +326,7 @@ public class Setup extends AppCompatActivity {
             details_edit.putString("year",year);
             details_edit.putString("semester",semester);
             details_edit.putString("mode",mode);
+            details_edit.putString("program",program);
             details_edit.putString("classes",_classes);
             details_edit.apply();
             SharedPreferences prefs = getSharedPreferences("flags",MODE_PRIVATE);

@@ -55,21 +55,22 @@ public class MiscEvents {
 //
 //    }
 
-    public String GetProgramPrefix(String id){
-        String prefix;
-        String returnVal=id;
-        int count=id.length()-1;
-        for (int i = 0; i < id.length(); i++) {
-            try {
-                Integer.parseInt(id.charAt(count)+"");
-                returnVal=returnVal.replace(id.charAt(count)+"","");
-            }catch (Exception e){
-
-            }
-            count=count-1;
+    public String GetProgramPrefix(String id, Context context){
+        try {
+            Resources resources =context.getResources();
+            InputStreamReader read = new InputStreamReader(resources.openRawResource(R.raw.all_progs));
+            BufferedReader reader = new BufferedReader(read);
+            String string_json = reader.readLine();
+            JSONObject classes = new JSONObject(string_json);
+            String prefix = classes.getString(id);
+//                app currently for undergrad students
+//            _classes = classes.getJSONObject("undergraduate").getJSONObject(mode).getJSONObject(new MiscEvents().GetProgramPrefix(studentId)+year+semester).toString();
+            return prefix;
+        }catch (Exception e){
+            Log.w("CC","error wiseas "+e);
+            return null;
         }
-
-        return returnVal;
+//        return null;
     }
 
     public String Fail_safe(Context context,String caller){
@@ -129,7 +130,7 @@ public class MiscEvents {
 //                    success continue
                 Elements tds = Jsoup.parse(access).getElementsByAttributeValueStarting("class","grd");
                 JSONObject details = new JSONObject();
-                String [] keys = {"code","ass1","ass2","practical","test","mid","ca"};
+                String [] keys = {"code","ass1","practical","mid","ca"};
 
                 for(Element _element: tds ){
                     Elements innerTds = _element.getElementsByTag("td");
@@ -456,58 +457,68 @@ public class MiscEvents {
                 Fail_safe(context,"registration");
                 return "";
 
-            }}else{
+            }}else {
 
 
-                Document doc = Jsoup.parse(access);
-                Element print = doc.getElementById("divPrint");
-                Elements tds = print.getElementsByTag("td");
-                JSONObject details = new JSONObject();
+            Document doc = Jsoup.parse(access);
+            Element print = doc.getElementById("divPrint");
+            Elements tds = print.getElementsByTag("td");
+            JSONObject details = new JSONObject();
 
-                Elements grds = print.getElementsByAttributeValueStarting("class", "grd");
-                JSONArray programs = new JSONArray();
-                for (Element grd : grds) {
-                    Elements innerGrds = grd.getElementsByTag("td");
-                    try {
-                        programs.put(innerGrds.get(2).text());
+            Elements grds = print.getElementsByAttributeValueStarting("class", "grd");
+            JSONArray programs = new JSONArray();
+            for (Element grd : grds) {
+                Elements innerGrds = grd.getElementsByTag("td");
+                try {
+                    programs.put(innerGrds.get(2).text());
 //                    put this stuff in a
 
+                } catch (Exception e) {
+                    Log.w("CC", "error wisea " + e);
+                    return "failed";
+                }
+            }
+            String year = "";
+            String semester = "";
+            String mode = "";
+            String program = "";
+            for (Element element : tds) {
+
+                if (element.text().contains("YEAR OF STUDY")) {
+                    String string = element.text().replace("YEAR OF STUDY:", "").replace("SEMESTER:", "").replaceAll(" ", "");
+                    year = string.charAt(0) + "";
+                    semester = string.charAt(1) + "";
+                    Log.w("CC", year + " " + semester + " " + element.text());
+                    try {
+                        details.put("year", year);
+                        details.put("semester", semester);
+
                     } catch (Exception e) {
-                        Log.w("CC", "error wisea " + e);
+                        Log.w("CC", "error wise " + e);
+                        return "failed";
+                    }
+
+
+                } else if (element.text().contains("MODE OF STUDY")) {
+                    try {
+                        mode = element.text().replace("MODE OF STUDY: ", "").replace(" ", "").toLowerCase();
+                        details.put("year", mode);
+
+                    } catch (Exception e) {
+                        Log.w("CC", "error wiseac " + e);
+                        return "failed";
+                    }
+                } else if (element.text().contains("PROGRAM OF STUDY")) {
+                    try {
+                        program = element.text().replace("PROGRAM OF STUDY: ", "");
+                        details.put("program", program);
+
+                    } catch (Exception e) {
+                        Log.w("CC", "error wiseac " + e);
                         return "failed";
                     }
                 }
-                String year = "";
-                String semester = "";
-                String mode = "";
-                for (Element element : tds) {
-
-                    if (element.text().contains("YEAR OF STUDY")) {
-                        String string = element.text().replace("YEAR OF STUDY:", "").replace("SEMESTER:", "").replaceAll(" ", "");
-                        year = string.charAt(0) + "";
-                        semester = string.charAt(1) + "";
-                        Log.w("CC", year + " " + semester + " " + element.text());
-                        try {
-                            details.put("year", year);
-                            details.put("semester", semester);
-
-                        } catch (Exception e) {
-                            Log.w("CC", "error wise " + e);
-                            return "failed";
-                        }
-
-
-                    } else if (element.text().contains("MODE OF STUDY")) {
-                        try {
-                            mode = element.text().replace("MODE OF STUDY: ", "").replace(" ", "").toLowerCase();
-                            details.put("year", mode);
-
-                        } catch (Exception e) {
-                            Log.w("CC", "error wiseac " + e);
-                            return "failed";
-                        }
-                    }
-                }
+            }
                 String _classes = "";
                 try {
                     Resources resources = context.getResources();
@@ -516,7 +527,7 @@ public class MiscEvents {
                     String string_json = reader.readLine();
                     JSONObject classes = new JSONObject(string_json);
 //                app currently for undergrad students
-                    _classes = classes.getJSONObject("undergraduate").getJSONObject(mode).getJSONObject(GetProgramPrefix(studentId) + year + semester).toString();
+                    _classes = classes.getJSONObject("undergraduate").getJSONObject(mode).getJSONObject(GetProgramPrefix(program, context) + year + semester).toString();
 
                 } catch (Exception e) {
                     Log.w("CC", "error wiseas " + e);
@@ -528,6 +539,7 @@ public class MiscEvents {
                 details_edit.putString("year", year);
                 details_edit.putString("semester", semester);
                 details_edit.putString("mode", mode);
+                details_edit.putString("program", program);
                 details_edit.putString("classes", _classes);
                 details_edit.apply();
                 SharedPreferences prefs = context.getSharedPreferences("flags", MODE_PRIVATE);
@@ -539,6 +551,7 @@ public class MiscEvents {
 
                 return "success";
             }
+
     }catch (Exception e){
             ShowMessage("Something went wrong",context);
         }

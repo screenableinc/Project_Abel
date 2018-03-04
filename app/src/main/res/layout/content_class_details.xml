@@ -90,44 +90,6 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Assignment 2"
-            android:textColor="?attr/colorAccent"
-            android:textSize="18sp" />
-
-        <FrameLayout
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center">
-
-            <com.mikhaellopez.circularprogressbar.CircularProgressBar
-                android:id="@+id/progress_ass2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                app:cpb_background_progressbar_color="?attr/colorAccent"
-                app:cpb_background_progressbar_width="5dp"
-
-
-                app:cpb_progress="0"
-                app:cpb_progressbar_color="?attr/colorPrimary"
-                app:cpb_progressbar_width="10dp" />
-
-            <TextView
-                android:id="@+id/ass2text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:alpha="0.0"
-                android:text="0.0"
-                android:textColor="?attr/colorAccent"
-                android:textSize="30sp" />
-        </FrameLayout>
-
-        <TextView
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -156,44 +118,6 @@
 
             <TextView
                 android:id="@+id/grdpractical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:alpha="0.0"
-                android:text="0.0"
-                android:textColor="?attr/colorAccent"
-                android:textSize="30sp" />
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Test"
-            android:textColor="?attr/colorAccent"
-            android:textSize="18sp" />
-
-        <FrameLayout
-            android:layout_width="200dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center">
-
-            <com.mikhaellopez.circularprogressbar.CircularProgressBar
-                android:id="@+id/progress_test"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                app:cpb_background_progressbar_color="?attr/colorAccent"
-                app:cpb_background_progressbar_width="5dp"
-
-
-                app:cpb_progress="0"
-                app:cpb_progressbar_color="?attr/colorPrimary"
-                app:cpb_progressbar_width="10dp" />
-
-            <TextView
-                android:id="@+id/grdtest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

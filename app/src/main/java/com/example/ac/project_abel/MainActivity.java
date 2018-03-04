@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="4.8";
+    protected String APP_VERSION_NUMBER="4.9";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -111,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
         String classes = sharedPref.getString("classes", null);
         String f_classes = sharedPref.getString("free_classes", null);
         String t_a = sharedPref.getString("tests_and_ass",null);
+        Log.w("CC",classes+" "+ credentials.getString("studentId",null)+" "+sharedPref.getString("program",null));
+
 
 //        display reg error
 
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("tests_and_ass",new JSONArray().toString());
             editor.commit();
         }
-        String prefix = new MiscEvents().GetProgramPrefix(credentials.getString("studentId",null));
+        String prefix = new MiscEvents().GetProgramPrefix(sharedPref.getString("program",null),getApplicationContext());
         selection = "undergraduate---"+sharedPref.getString("mode",null)+"---"+prefix+sharedPref.getString("year",null)+sharedPref.getString("semester",null);
         Log.w("CC",selection);
 

@@ -65,6 +65,8 @@ public class Material extends Fragment {
                     TextView mat_av = (TextView) rootView.findViewById(R.id.mat_av);
                     mat_av.setVisibility(View.VISIBLE);
                 }
+                Log.w("CC",array.length()+"oooooooooooooool");
+
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
                     LayoutInflater inflater=LayoutInflater.from(getActivity());
@@ -121,11 +123,15 @@ public class Material extends Fragment {
                     });
 
                     number.setText((i + 1) + "");
-                    filename.setText(file_name);
+                    filename.setText(description.split(":",-1)[1]);
                     holder.addView(ass_lay);
 
 
                 }
+                LayoutInflater inflater=LayoutInflater.from(getActivity());
+                LinearLayout ass_lay = (LinearLayout) inflater.inflate(R.layout.material_ass, null);
+                holder.addView(ass_lay);
+
             }else {
 
                     TextView mat_av = (TextView) rootView.findViewById(R.id.mat_av);
@@ -133,7 +139,7 @@ public class Material extends Fragment {
 
             }
         } catch (Exception e) {
-            Toast.makeText(getActivity(),"Something went wrong",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),"Something went wrong "+e,Toast.LENGTH_LONG).show();
             Log.w("CC",e.toString());
         }
     }
