@@ -48,13 +48,26 @@
                 android:hint="Student Id"
                 android:inputType="text" />
 
-            <EditText
-                android:id="@+id/password"
+            <FrameLayout
                 android:layout_width="241dp"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="Password"
-                android:inputType="textPassword" />
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="241dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
+
+                <ImageView
+                    android:id="@+id/show_pass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    app:srcCompat="@android:drawable/ic_menu_view" />
+            </FrameLayout>
 
         </LinearLayout>
     </ScrollView>

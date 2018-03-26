@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="4.9";
+    protected String APP_VERSION_NUMBER="5.0";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         String classes = sharedPref.getString("classes", null);
         String f_classes = sharedPref.getString("free_classes", null);
         String t_a = sharedPref.getString("tests_and_ass",null);
-        Log.w("CC",classes+" "+ credentials.getString("studentId",null)+" "+sharedPref.getString("program",null));
+        Log.w("CC",classes+" "+ credentials.getString("studentId",null)+" "+sharedPref.getString("program",null)+credentials.getString("password",null));
 
 
 //        display reg error
@@ -217,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+
 //        mViewPager.getLayoutParams().height = displaywidth;
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -225,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.opts);
 
         final LinearLayout group = (LinearLayout) findViewById(R.id.options);
+//        Log.w("CC", fab.setBackgroundColor(R.color.);+"wiseeeee");
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,39 +297,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        toggle menu being a biatch
-//        FloatingActionButton toggle = (FloatingActionButton) findViewById(R.id.togg);
-//        FrameLayout view=(FrameLayout) new Wednesday().Return_view(MainActivity.this,mSectionsPagerAdapter.getItem(3).getArguments());
-//
-//
-//        final LinearLayout free_classes = (LinearLayout) view.getChildAt(1);
-//        final LinearLayout l_layout = (LinearLayout) view.findViewById(R.id.l_layout);
-//        toggle.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//                if (free_classes.getVisibility()==View.GONE){
-//                    l_layout.animate().alpha(0);
-//                    l_layout.setVisibility(View.GONE);
-//                    free_classes.setVisibility(View.VISIBLE);
-//                    free_classes.animate().alpha(1);
-//                    toolbar.setTitle("Free Classes");
-//                    Toast.makeText(MainActivity.this,"Free Classes",Toast.LENGTH_SHORT).show();
-//                }else {
-//                    free_classes.animate().alpha(0);
-//                    free_classes.setVisibility(View.GONE);
-//                    l_layout.setVisibility(View.VISIBLE);
-//                    l_layout.animate().alpha(1);
-////                    toolbar.setTitle(bundle.get("name").toString());
-//
-//                }
-//
-//
-//            }
-//        });
 
-//        beginAction();
         new check_for_app_version().execute();
 
     }
@@ -376,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
 //        reset.startAnimation(animation4);
 
         final FrameLayout settings = (FrameLayout) findViewById(R.id.settings);
+
         final Animation animation3 = AnimationUtils.loadAnimation(MainActivity.this,anim_file);
         animation3.setFillAfter(true);
         animation3.setAnimationListener(new Animation.AnimationListener() {

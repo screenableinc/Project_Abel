@@ -288,6 +288,11 @@ public class Setup extends AppCompatActivity {
                 }else if(element.text().contains("MODE OF STUDY")){
                     try {
                         mode= element.text().replace("MODE OF STUDY: ","").replace(" ","").toLowerCase();
+                        if(mode.contains("distance")){
+                            mode="fulltime";
+                        }
+
+
                         details.put("mode",mode);
 
                     }catch (Exception e){

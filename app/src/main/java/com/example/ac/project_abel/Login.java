@@ -15,6 +15,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -139,6 +141,19 @@ public class Login extends AppCompatActivity{
         final EditText studentid = (EditText) findViewById(R.id.studentId);
         final EditText password = (EditText) findViewById(R.id.password);
         final EditText name = (EditText) findViewById(R.id.name);
+        ImageView toggle_pass = (ImageView) findViewById(R.id.show_pass);
+        toggle_pass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(password.getInputType()==InputType.TYPE_TEXT_VARIATION_PASSWORD ){
+                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                }else {
+                    password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                }
+            }
+        });
 
 
         Button login = (Button) findViewById(R.id.login);
@@ -228,10 +243,12 @@ public class Login extends AppCompatActivity{
 
                 }
             }catch (Exception e){
+                Log.w("CC","errr "+e);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),"Check internet connection",Toast.LENGTH_LONG).show();
+
+                        Toast.makeText(getApplicationContext(),"Check internet connection ",Toast.LENGTH_LONG).show();
                     }
                 });
 

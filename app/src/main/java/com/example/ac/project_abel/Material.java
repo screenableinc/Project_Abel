@@ -130,6 +130,7 @@ public class Material extends Fragment {
                 }
                 LayoutInflater inflater=LayoutInflater.from(getActivity());
                 LinearLayout ass_lay = (LinearLayout) inflater.inflate(R.layout.material_ass, null);
+                ass_lay.setVisibility(View.INVISIBLE);
                 holder.addView(ass_lay);
 
             }else {
@@ -147,8 +148,10 @@ public class Material extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
+            TextView mat_av = (TextView) rootView.findViewById(R.id.mat_av);
+            mat_av.setVisibility(View.GONE);
             LoadView();
+
         }
 
         @Override

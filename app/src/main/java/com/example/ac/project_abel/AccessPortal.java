@@ -1,5 +1,9 @@
 package com.example.ac.project_abel;
 
+/**
+ * Created by Wise on 3/25/2018.
+ */
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -32,7 +36,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class AccessPortal {
-//    perform get request first to get from data
+    //    perform get request first to get from data
     HttpURLConnection conn;
     private String cookie;
     private static String USER_AGENT = "Mozilla/5.0";
@@ -224,6 +228,7 @@ public class AccessPortal {
         conn.setRequestProperty("Accept",
                 "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
         conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+        conn.setInstanceFollowRedirects(false);
 
         conn.addRequestProperty("Cookie", cookie);
 
@@ -240,14 +245,16 @@ public class AccessPortal {
 
 
         // Send post request
+
         DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
         wr.writeBytes(postParams);
         wr.flush();
         wr.close();
 
 
-        int responseCode = conn.getResponseCode();
-        Log.w("CC","\nSending 'POST' request size to URL : " + postParams.length());
+//        int responseCode = conn.getResponseCode();
+        Log.w("CC","Stage one");
+        Log.w("CC","\nSending 'POST' request size to URL : "+conn.getErrorStream() + postParams.length());
 
 
         BufferedReader in =
@@ -259,6 +266,7 @@ public class AccessPortal {
             response.append(inputLine);
         }
         in.close();
+        Log.w("CC","Stage two");
     }
     public String postforMaterial(String url,String postParams,String cookie) throws Exception{
         URL obj = new URL(url);

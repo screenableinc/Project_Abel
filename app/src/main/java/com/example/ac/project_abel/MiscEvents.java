@@ -502,6 +502,9 @@ public class MiscEvents {
                 } else if (element.text().contains("MODE OF STUDY")) {
                     try {
                         mode = element.text().replace("MODE OF STUDY: ", "").replace(" ", "").toLowerCase();
+                        if(mode.contains("distance")){
+                            mode="fulltime";
+                        }
                         details.put("year", mode);
 
                     } catch (Exception e) {

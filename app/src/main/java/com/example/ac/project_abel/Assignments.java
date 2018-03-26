@@ -147,7 +147,8 @@ public class Assignments extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-
+            TextView ass_av = (TextView) rootView.findViewById(R.id.ass_av);
+            ass_av.setVisibility(View.GONE);
             LoadView();
         }
 
