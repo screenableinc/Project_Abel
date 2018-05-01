@@ -2,6 +2,7 @@ package com.example.ac.project_abel;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -78,7 +79,7 @@ public class Update extends AsyncTask<String, Integer,String>{
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(activity,"Update_failed, Check your network connection",Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity,"Update_failed, Check your network connection "+e,Toast.LENGTH_LONG).show();
                 }
             });
             this.cancel(true);
@@ -94,6 +95,9 @@ public class Update extends AsyncTask<String, Integer,String>{
             @Override
             public void run() {
                 Toast.makeText(activity,"done",Toast.LENGTH_LONG).show();
+                Intent intent = activity.getIntent();
+                activity.finish();
+                activity.startActivity(intent);
             }
         });
 

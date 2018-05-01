@@ -289,7 +289,7 @@ public class Setup extends AppCompatActivity {
                     try {
                         mode= element.text().replace("MODE OF STUDY: ","").replace(" ","").toLowerCase();
                         if(mode.contains("distance")){
-                            mode="fulltime";
+                            mode="distance";
                         }
 
 
