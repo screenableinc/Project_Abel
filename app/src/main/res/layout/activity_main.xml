@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Please register to view classes"
+            android:text="Please register to view classes\n then reset and login again"
             android:textColor="?attr/colorAccent"
             android:textSize="20sp"
             android:visibility="gone" />
