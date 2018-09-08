@@ -20,6 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -125,11 +126,12 @@ public class Toggle {
         TextView code_ = (TextView) class_details.findViewById(R.id.code);
         TextView type_ = (TextView) class_details.findViewById(R.id.type);
         ScrollView scroll2 = (ScrollView) class_details.findViewById(R.id.scroll2);
+        Button viewCourse = (Button) class_details.findViewById(R.id.viewcourse);
 //        Calendar calendar = Calendar.getInstance();
 //        this.year=calendar.get(Calendar.YEAR);
 //        this.month=calendar.get(Calendar.MONTH);
 //        this.day=calendar.get(Calendar.DAY_OF_MONTH);
-        course.setOnClickListener(new View.OnClickListener() {
+        viewCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 context.startActivity(new Intent(context,CourseInfo.class).putExtra("course",code));

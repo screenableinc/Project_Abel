@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="6.0";
+    protected String APP_VERSION_NUMBER="6.1";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String prefix = new MiscEvents().GetProgramPrefix(sharedPref.getString("program",null),getApplicationContext());
         selection = "undergraduate---"+sharedPref.getString("mode",null)+"---"+prefix+sharedPref.getString("year",null)+sharedPref.getString("semester",null);
-        Log.w("CC",selection);
+//        Log.w("CC",selection);
 
         int displaywidth = getWindowManager().getDefaultDisplay().getHeight();
 //        BroadcastReceiver alarmreceiver = new BroadcastReceiver() {
@@ -391,6 +391,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        update_app.startAnimation(animation2);
+
 
 
         FrameLayout update = (FrameLayout) findViewById(R.id.update);
