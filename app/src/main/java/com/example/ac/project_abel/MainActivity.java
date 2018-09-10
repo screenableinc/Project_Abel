@@ -544,7 +544,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                URL url = new URL("https://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/src/main/version.cmv");
+                URL url = new URL("https://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/src/main/version_nf.cmv");
                 URLConnection connection = url.openConnection();
 //            connection.setConnectTimeout(5000);
                 connection.setDefaultUseCaches(false);connection.setUseCaches(false);
@@ -560,14 +560,21 @@ public class MainActivity extends AppCompatActivity {
                     _result.append(line);
                 }
                 final String result=_result.toString();
+                JSONObject object = new JSONObject(result);
+                JSONArray fixes = object.getJSONArray("fixes");
+                String fix="";
+                String newVersion = object.getString("version");
+                for (int i = 0; i <fixes.length();i++ ){
+                    fix = fix + "\n - " +fixes.getString(i);
+                }
 
-                if(!APP_VERSION_NUMBER.equals(result.toString())){
+                if(!APP_VERSION_NUMBER.equals(newVersion)){
 //                    show dialogue
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle("Update")
+                            builder.setTitle("Update to version "+ APP_VERSION_NUMBER)
 
                                     .setMessage("Version "+result.toString() +" available\n Current is "+APP_VERSION_NUMBER)
 

@@ -47,9 +47,17 @@ public class Performance extends Fragment {
     private void LoadView(final String course){
 
 //        get CA for program
+        if (getContext()== null){
+            return;
+        }
+
         SharedPreferences preferences =getContext().getSharedPreferences("details",MODE_PRIVATE);
         String ca = preferences.getString("ca",null);
         Log.w("CC",ca.toString());
+
+
+
+
         FloatingActionButton refresh = (FloatingActionButton) rootView.findViewById(R.id.refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
