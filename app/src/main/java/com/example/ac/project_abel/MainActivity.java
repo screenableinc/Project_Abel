@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="6.1";
+    protected String APP_VERSION_NUMBER="6.3";
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -563,7 +563,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject object = new JSONObject(result);
                 JSONArray fixes = object.getJSONArray("fixes");
                 String fix="";
-                String newVersion = object.getString("version");
+                final String newVersion = object.getString("version");
                 for (int i = 0; i <fixes.length();i++ ){
                     fix = fix + "\n - " +fixes.getString(i);
                 }
@@ -575,7 +575,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle("Update to version "+ APP_VERSION_NUMBER)
+                            builder.setTitle("Update to version "+ newVersion)
 
                                     .setMessage( fix_var)
 
