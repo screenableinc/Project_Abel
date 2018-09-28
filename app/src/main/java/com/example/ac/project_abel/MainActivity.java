@@ -570,13 +570,14 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!APP_VERSION_NUMBER.equals(newVersion)){
 //                    show dialogue
+                    final String fix_var = fix;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                             builder.setTitle("Update to version "+ APP_VERSION_NUMBER)
 
-                                    .setMessage("Version "+result.toString() +" available\n Current is "+APP_VERSION_NUMBER)
+                                    .setMessage( fix_var)
 
                                     .setPositiveButton("Download", new DialogInterface.OnClickListener() {
                                         @Override

@@ -1,1 +1,1 @@
-{version:'6.2', fixes:["Fixed memory leaks"]}
+{version:'6.3', fixes:["Fixed memory leaks","Fixed performance issues","Fixed failed login errors"]}

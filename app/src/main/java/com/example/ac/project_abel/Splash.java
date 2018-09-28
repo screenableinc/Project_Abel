@@ -19,8 +19,9 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
                 Intent mainIntent = new Intent(Splash.this,Login.class);
-                Splash.this.startActivity(mainIntent);
                 Splash.this.finish();
+                Splash.this.startActivity(mainIntent);
+
             }
         }, SPLASH_DISPLAY_LENGTH);
     }

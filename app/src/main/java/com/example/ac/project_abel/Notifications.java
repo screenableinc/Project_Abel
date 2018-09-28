@@ -35,7 +35,7 @@ public class Notifications {
     public void show(){
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setSmallIcon(R.drawable.notification_cm)
                         .setContentTitle(title)
                         .setContentText(message);
 // Creates an explicit intent for an Activity in your app

@@ -84,6 +84,9 @@ public class Setup extends AppCompatActivity {
 
                     for(Element _element: tds ){
                         Elements innerTds = _element.getElementsByTag("td");
+                        if(innerTds.size()==6){
+                            innerTds.remove(2);
+                        }
 
                         try{
                             JSONObject object = new JSONObject();

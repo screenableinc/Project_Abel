@@ -129,11 +129,15 @@ public class MiscEvents {
             }else {
 //                    success continue
                 Elements tds = Jsoup.parse(access).getElementsByAttributeValueStarting("class","grd");
+
                 JSONObject details = new JSONObject();
                 String [] keys = {"code","ass1","practical","mid","ca"};
 
                 for(Element _element: tds ){
                     Elements innerTds = _element.getElementsByTag("td");
+                    if(innerTds.size()==6){
+                        innerTds.remove(2);
+                    }
 
                     try{
                         JSONObject object = new JSONObject();
