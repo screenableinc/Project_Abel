@@ -260,6 +260,7 @@ public class Setup extends AppCompatActivity {
             for (Element grd:grds){
                 Elements innerGrds = grd.getElementsByTag("td");
                 try {
+                    Log.w("CC",innerGrds.toString()+"kkkkkk");
                     programs.put(innerGrds.get(2).text());
 //                    put this stuff in a
 
@@ -308,7 +309,7 @@ public class Setup extends AppCompatActivity {
                         details.put("program",program);
 
                     }catch (Exception e){
-                        Log.w("CC","error wiseac "+e);
+                        Log.w("CC","error wiseac 1"+e);
                         return "failed";
                     }
                 }
@@ -352,9 +353,10 @@ public class Setup extends AppCompatActivity {
             try{
 //                the following code is a house of cards.....optimise it int the next build
                 SharedPreferences preferences = getSharedPreferences("credentials",MODE_PRIVATE);
+
                 studentId=preferences.getString("studentId",null);
                 password=preferences.getString("password",null);
-                Log.w("CC",studentId+" "+password);
+                Log.w("CC",studentId+" hryyyyy"+password);
                 String response = new AccessPortal(studentId,password,globals.registration_url,Setup.this).GetPageContent(globals.registration_url);
                 Element element = Jsoup.parse(response).getElementById("MainContent_Button1");
                 if(element==null){
