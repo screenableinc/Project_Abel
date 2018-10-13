@@ -18,10 +18,12 @@ public class ThemeSettings {
         switch (theme){
 
 
-            case "quepal":
+            case "klaude":
                 return R.style.AppThemeQuepal;
             case "judy":
                 return R.style.AppThemeJudy;
+            case "moono":
+                return R.style.AppThemeMoono;
             case "lawrencium":
                 return R.style.AppThemeBluish;
             case "default":

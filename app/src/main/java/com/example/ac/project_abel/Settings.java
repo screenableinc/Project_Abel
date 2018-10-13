@@ -52,10 +52,12 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         setTitle("Settings");
 //        LinearLayout themes = (LinearLayout) findViewById(R.id.themes);
+//        checkboxes for themes
         final CheckBox lawrencium = (CheckBox) findViewById(R.id.lawrencium);
         CheckBox judy = (CheckBox) findViewById(R.id.judy);
         CheckBox default_theme = (CheckBox) findViewById(R.id.default_theme);
         CheckBox quepal = (CheckBox) findViewById(R.id.quepal);
+        CheckBox moono = (CheckBox) findViewById(R.id.moono);
         final ViewGroup theme_list = (ViewGroup) findViewById(R.id.themes);
         final int child_count = theme_list.getChildCount();
         for (int i = 0;i<child_count;i++){
@@ -92,8 +94,11 @@ public class Settings extends AppCompatActivity {
             case "judy":
                 judy.setChecked(true);
                 return;
-            case "quepal":
+            case "klaude":
                 quepal.setChecked(true);
+                return;
+            case "moono":
+                moono.setChecked(true);
                 return;
             case "":
                 default_theme.setChecked(true);

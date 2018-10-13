@@ -62,7 +62,7 @@ import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     JSONArray sunday;JSONArray monday;JSONArray tuesday;JSONArray wednesday;JSONArray thursday;JSONArray friday;
     JSONObject f_sunday;JSONObject f_monday;JSONObject f_tuesday;JSONObject f_wednesday;JSONObject f_thursday;JSONObject f_friday;JSONObject f_saturday;

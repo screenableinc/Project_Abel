@@ -16,4 +16,9 @@
     <color name = "colorQuepalAccent">#38ef7d</color>
     <color name = "colorQuepal">#11998e</color>
 
+    <!--Moono-->
+    <color name = "colorMoonoDark">#c4179e</color>
+    <color name = "colorMoonoAccent">#f46bd6</color>
+    <color name = "colorMoono">#910572</color>
+
 </resources>
