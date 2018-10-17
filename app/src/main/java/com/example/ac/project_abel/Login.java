@@ -1,12 +1,15 @@
 package com.example.ac.project_abel;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,16 +33,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,6 +67,7 @@ public class Login extends AppCompatActivity{
 
 
     private String free_classes;
+    private String APP_VERSION_NUMBER = new Globals().APP_VERSION_NUMBER;
 //    keep json of course codes and thier fullnames as values
 
 
@@ -102,6 +112,8 @@ public class Login extends AppCompatActivity{
             startActivity(new Intent(Login.this,MainActivity.class));
             finish();
         }
+
+        new check_for_app_version().execute();
         String ca = sharedPref.getString("ca", null);
         String classes = sharedPref.getString("classes", null);
         String aFinal = sharedPref.getString("final",null);
@@ -115,7 +127,28 @@ public class Login extends AppCompatActivity{
 
 
         setContentView(R.layout.activity_login);
+        final TextView login_fail = (TextView) findViewById(R.id.login_fail);
+        login_fail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                builder.setTitle("Trouble Logging in?")
 
+                        .setMessage( "Whatsapp 'Classmate' to +260954806566" )
+
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+
+
+                            }
+                        })
+
+                        .show();
+            }
+        });
 
 
 
@@ -262,4 +295,74 @@ public class Login extends AppCompatActivity{
             dialog.dismiss();
         }
     }
+    public class check_for_app_version extends AsyncTask<String, Integer, String>{
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                URL url = new URL("https://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/src/main/version_nf.cmv");
+                URLConnection connection = url.openConnection();
+//            connection.setConnectTimeout(5000);
+                connection.setDefaultUseCaches(false);connection.setUseCaches(false);
+
+
+
+                InputStream response = connection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(response);
+                BufferedReader reader1 = new BufferedReader(reader);
+                StringBuilder _result = new StringBuilder();
+                String line;
+                while((line = reader1.readLine()) != null) {
+                    _result.append(line);
+                }
+                final String result=_result.toString();
+                JSONObject object = new JSONObject(result);
+                JSONArray fixes = object.getJSONArray("fixes");
+                String fix="";
+                final String newVersion = object.getString("version");
+                for (int i = 0; i <fixes.length();i++ ){
+                    fix = fix + "\n - " +fixes.getString(i);
+                }
+
+                if(!APP_VERSION_NUMBER.equals(newVersion)){
+//                    show dialogue
+                    final String fix_var = fix;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+                            builder.setTitle("Update to version "+ newVersion)
+
+                                    .setMessage( fix_var)
+
+                                    .setPositiveButton("Download", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+
+                                            Intent openBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse("http://raw.githubusercontent.com/screenableinc/Project_Abel/master/app/app-release.apk"));
+                                            startActivity(openBrowser);
+
+
+                                        }
+                                    })
+
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+//                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                        }
+                    });
+
+
+                }
+            }catch (Exception e){
+
+            }
+
+            return null;
+        }
+    }
+
 }

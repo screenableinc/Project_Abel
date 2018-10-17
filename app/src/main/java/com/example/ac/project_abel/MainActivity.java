@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity{
     JSONObject json_of_free_classes;
     String greeting;
     String selection;
-    protected String APP_VERSION_NUMBER="6.4";
+    protected String APP_VERSION_NUMBER=new Globals().APP_VERSION_NUMBER;
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;

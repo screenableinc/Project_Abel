@@ -13,6 +13,7 @@ public class Globals {
     protected static final String viewca_url = "http://www.unilus.ac.zm/Students/ViewCA.aspx";
     protected static final String viewfinal_url = "http://www.unilus.ac.zm/Students/ViewResults.aspx";
     protected static final String assignments_url = "http://www.unilus.ac.zm/Students/Assignments.aspx";
+    protected static final String APP_VERSION_NUMBER = "6.5";
 
 
 }
