@@ -97,7 +97,7 @@ public class Login extends AppCompatActivity{
 
 
 //        should put this in an async task to show user that data is loading
-//        startActivity(new Intent(Login.this,MainActivity.class));
+//        startActivity(new Intent(Login.this,Main2Activity.class));
 //        finish();
 
 
@@ -107,9 +107,9 @@ public class Login extends AppCompatActivity{
         SharedPreferences flags = getApplicationContext().getSharedPreferences("flags",Context.MODE_PRIVATE);
         String progs = sharedPref.getString("programs",null);
         Log.w("CC",flags.getBoolean("ca",false)+" "+flags.getBoolean("final",false)+" "+ flags.getBoolean("year_sem",false)+" "+progs);
-        if(flags.getBoolean("ca",false)&&flags.getBoolean("final",false)&&flags.getBoolean("contacts",false))
+        if(flags.getBoolean("ca",false)&&flags.getBoolean("final",false)&&flags.getBoolean("contacts",false)&& flags.getBoolean("programs_dict",false))
         {
-            startActivity(new Intent(Login.this,MainActivity.class));
+            startActivity(new Intent(Login.this,Main2Activity.class));
             finish();
         }
 
@@ -121,7 +121,7 @@ public class Login extends AppCompatActivity{
         Log.w("CC",classes+"jjjjjj");
 
 //        if (name!=null && classes!=null && selection!=null){
-//            startActivity(new Intent(Login.this, MainActivity.class));
+//            startActivity(new Intent(Login.this, Main2Activity.class));
 //            finish();
 //        }
 
@@ -252,7 +252,7 @@ public class Login extends AppCompatActivity{
         @Override
         protected String doInBackground(String... params) {
             try {
-                String login = new AccessPortal(params[0], params[1], "http://www.unilus.ac.zm/Students/StudentPortal.aspx",Login.this).run();
+                String login = new AccessPortal(params[0], params[1], "https://www.unilus.ac.zm/Students/StudentPortal.aspx",Login.this).run();
 
                 if (login.equals("success")){
 //                    store username in sharedpref

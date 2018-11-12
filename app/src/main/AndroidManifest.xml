@@ -32,10 +32,6 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".Reminders"
@@ -58,10 +54,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".NewMainActivity"
-            android:label="@string/title_activity_new_main"
-            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"

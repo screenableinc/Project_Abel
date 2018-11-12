@@ -20,13 +20,14 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
+
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -37,9 +38,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AccessPortal {
     //    perform get request first to get from data
-    HttpURLConnection conn;
+    HttpsURLConnection conn;
     private String cookie;
-    private static String USER_AGENT = "Mozilla/5.0";
+    private static String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36";
     private JSONObject data = new JSONObject();
 
 
@@ -64,7 +65,7 @@ public class AccessPortal {
 //        AccessPortal accessPortal = new AccessPortal();
 
 
-        String markup = this.GetPageContentForLogin("http://www.unilus.ac.zm/Students/Login.aspx");
+        String markup = this.GetPageContentForLogin("https://www.unilus.ac.zm/Students/Login.aspx");
         Document html = Jsoup.parse(markup);
 
 //        get vierwstate values and shit
@@ -73,7 +74,7 @@ public class AccessPortal {
 
 
         String params = this.getFormParams(markup,username,password);
-        this.post("http://www.unilus.ac.zm/Students/Login.aspx",params);
+        this.post("https://www.unilus.ac.zm/Students/Login.aspx",params);
         String portal = this.GetPageContentForLogin(this.url);
         Document returned_page = Jsoup.parse(portal);
         Element login= returned_page.getElementById("MainContent_Button1");
@@ -104,7 +105,7 @@ public class AccessPortal {
         URL obj = new URL(url);
 
 //        Log.w("CC",URLEncoder.encode(new JSONArray("['/wee']").toString(),"UTF-8"));
-        conn = (HttpURLConnection) obj.openConnection();
+        conn = (HttpsURLConnection) obj.openConnection();
 
         // default is GET
         conn.setRequestMethod("GET");
@@ -162,7 +163,7 @@ public class AccessPortal {
         URL obj = new URL(url);
 
 //        Log.w("CC",URLEncoder.encode(new JSONArray("['/wee']").toString(),"UTF-8"));
-        conn = (HttpURLConnection) obj.openConnection();
+        conn = (HttpsURLConnection) obj.openConnection();
 
         // default is GET
         conn.setRequestMethod("GET");
@@ -215,25 +216,29 @@ public class AccessPortal {
     }
     public void post(String url,String postParams) throws Exception{
         URL obj = new URL(url);
-        conn = (HttpURLConnection) obj.openConnection();
+        conn = (HttpsURLConnection) obj.openConnection();
+//        SSLContext sc;
+//        sc = SSLContext.getInstance("TLS");
+//        sc.init(null, null, new java.security.SecureRandom());
+//        conn.setSSLSocketFactory(sc.getSocketFactory());
 
 
         // Acts like a browser
         conn.setUseCaches(false);
-//        conn.setRequestMethod("POST");
+        conn.setRequestMethod("POST");
         conn.setDoOutput(true);
         conn.setDoInput(true);
-        conn.setRequestProperty("Host", "unilus.ac.zm");
-        conn.setRequestProperty("User-Agent", USER_AGENT);
+        conn.setRequestProperty("Host", "www.unilus.ac.zm");
+        conn.setRequestProperty("User-Agent", "Mozilla/ ( compatible )" );
         conn.setRequestProperty("Accept",
-                "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+                "*/*");
         conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
         conn.setInstanceFollowRedirects(false);
 
         conn.addRequestProperty("Cookie", cookie);
 
         conn.setRequestProperty("Connection", "keep-alive");
-        conn.setRequestProperty("Referer", "http://www.unilus.ac.zm/Students/Login.aspx");
+        conn.setRequestProperty("Referer", "https://www.unilus.ac.zm/Students/Login.aspx");
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
 
@@ -241,6 +246,7 @@ public class AccessPortal {
         Log.w("CC",Integer.toString(postParams.length()));
 
         conn.setRequestProperty("Content-Length", Integer.toString(postParams.length()));
+        Log.w("CC","\n hi...Sending 'POST' request size to URL : "+conn.getRequestProperties() + postParams.length());
 
 
 
@@ -270,7 +276,7 @@ public class AccessPortal {
     }
     public String postforMaterial(String url,String postParams,String cookie) throws Exception{
         URL obj = new URL(url);
-        conn = (HttpURLConnection) obj.openConnection();
+        conn = (HttpsURLConnection) obj.openConnection();
 
 
         // Acts like a browser
@@ -278,7 +284,7 @@ public class AccessPortal {
 //        conn.setRequestMethod("POST");
         conn.setDoOutput(true);
         conn.setDoInput(true);
-        conn.setRequestProperty("Host", "unilus.ac.zm");
+        conn.setRequestProperty("Host", "www.unilus.ac.zm");
         conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept",
                 "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");

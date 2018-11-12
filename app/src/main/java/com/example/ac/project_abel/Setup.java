@@ -257,11 +257,20 @@ public class Setup extends AppCompatActivity {
 
             Elements grds = print.getElementsByAttributeValueStarting("class","grd");
             JSONArray programs = new JSONArray();
+            JSONArray programs_code_dict=new JSONArray();
             for (Element grd:grds){
                 Elements innerGrds = grd.getElementsByTag("td");
                 try {
                     Log.w("CC",innerGrds.toString()+"kkkkkk");
+                    JSONObject class_code = new JSONObject();
+
+                    String program_code = innerGrds.get(1).text().split(" ",-1)[1]+"---"+innerGrds.get(2).text();
+
+
+                    programs_code_dict.put(program_code);
+
                     programs.put(innerGrds.get(2).text());
+
 //                    put this stuff in a
 
                 }catch (Exception e){
@@ -332,6 +341,7 @@ public class Setup extends AppCompatActivity {
             SharedPreferences details_prefs = getSharedPreferences("details",MODE_PRIVATE);
             SharedPreferences.Editor details_edit= details_prefs.edit();
             details_edit.putString("programs",programs.toString());
+            details_edit.putString("programs_dict",programs_code_dict.toString());
             details_edit.putString("year",year);
             details_edit.putString("semester",semester);
             details_edit.putString("mode",mode);
@@ -340,6 +350,7 @@ public class Setup extends AppCompatActivity {
             details_edit.apply();
             SharedPreferences prefs = getSharedPreferences("flags",MODE_PRIVATE);
             SharedPreferences.Editor edit= prefs.edit();
+            edit.putBoolean("programs_dict",true);
             edit.putBoolean("year_sem",true);
             edit.apply();
 
@@ -366,7 +377,7 @@ public class Setup extends AppCompatActivity {
                     String viewFinal = GetFinalResults();
                     String contact = GetLectContacts();
                     if(view_Ca.equals("success")&&viewFinal.equals("success")&&contact.equals("success")){
-                        startActivity(new Intent(Setup.this,MainActivity.class));
+                        startActivity(new Intent(Setup.this,Main2Activity.class));
                         finish();
                     }else {
                         startActivity(new Intent(Setup.this,Login.class));
@@ -391,7 +402,7 @@ public class Setup extends AppCompatActivity {
                             String contact = GetLectContacts();
                             Log.w("CC",year_sem+" "+view_Ca+ " "+viewFinal+" "+contact);
                             if(view_Ca.equals("success")&&viewFinal.equals("success")&&contact.equals("success")){
-                                startActivity(new Intent(Setup.this,MainActivity.class));
+                                startActivity(new Intent(Setup.this,Main2Activity.class));
                                 finish();
                             }else {
 

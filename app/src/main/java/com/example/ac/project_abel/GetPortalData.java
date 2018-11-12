@@ -20,7 +20,7 @@ import org.jsoup.select.Elements;
 public class GetPortalData {
 
     private List<String> cookies;
-    private HttpURLConnection conn;
+    private HttpsURLConnection conn;
 
     private final String USER_AGENT = "Mozilla/5.0";
 

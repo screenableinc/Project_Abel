@@ -471,9 +471,15 @@ public class MiscEvents {
 
             Elements grds = print.getElementsByAttributeValueStarting("class", "grd");
             JSONArray programs = new JSONArray();
-            for (Element grd : grds) {
+            JSONArray programs_code_dict=new JSONArray();
+            for (Element grd:grds){
                 Elements innerGrds = grd.getElementsByTag("td");
                 try {
+                    Log.w("CC",innerGrds.toString()+"kkkkkk");
+                    String program_code = innerGrds.get(1).text().split(" ",-1)[1]+"---"+innerGrds.get(2).text();
+
+
+                    programs_code_dict.put(program_code);
                     programs.put(innerGrds.get(2).text());
 //                    put this stuff in a
 
@@ -543,6 +549,7 @@ public class MiscEvents {
                 SharedPreferences details_prefs = context.getSharedPreferences("details", MODE_PRIVATE);
                 SharedPreferences.Editor details_edit = details_prefs.edit();
                 details_edit.putString("programs", programs.toString());
+                details_edit.putString("programs_dict",programs_code_dict.toString());
                 details_edit.putString("year", year);
                 details_edit.putString("semester", semester);
                 details_edit.putString("mode", mode);
@@ -552,6 +559,7 @@ public class MiscEvents {
                 SharedPreferences prefs = context.getSharedPreferences("flags", MODE_PRIVATE);
                 SharedPreferences.Editor edit = prefs.edit();
                 edit.putBoolean("year_sem", true);
+                edit.putBoolean("programs_dict",true);
                 edit.apply();
 
 //            GetPrograms();
@@ -577,9 +585,11 @@ public class MiscEvents {
             editor.putBoolean("final",false);
             editor.putBoolean("year_sem",false);
             editor.putBoolean("contacts",false);
+            editor.putBoolean("programs_dict",false);
             editor.apply();
             context.getSharedPreferences("credentials",MODE_PRIVATE).edit().clear().apply();
             context.getSharedPreferences("details",MODE_PRIVATE).edit().clear().apply();
+            context.getSharedPreferences("programs_dict",MODE_PRIVATE).edit().clear().apply();
 
 
         }catch (Exception e){
