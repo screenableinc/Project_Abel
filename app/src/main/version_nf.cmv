@@ -1,1 +1,1 @@
-{version:'6.6', fixes:["Fixed memory leaks","Fixed failed login errors", "fix for distance students","added changed options layout"]}
+{version:'6.7', fixes:["Fixed memory leaks","Fixed failed login errors", "fix for distance students","added changed options layout"]}

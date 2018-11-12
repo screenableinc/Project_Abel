@@ -92,7 +92,7 @@ public class Main2Activity extends AppCompatActivity
                 super.onDrawerClosed(drawerView);
 //                check if item has been clicked
                 if(selectedItemCode!=null){
-                    getApplicationContext().startActivity(new Intent(Main2Activity.this,CourseInfo.class).putExtra("course",selectedItemCode));
+                    startActivity(new Intent(Main2Activity.this,CourseInfo.class).putExtra("course",selectedItemCode));
 
 
                 }
